@@ -165,7 +165,7 @@ void SmallRobot::rotateAndCorrect(int degrees, int percentPower)
     }
 
     // 2. Calc target counter pos
-    const int targetPos = (degrees/360.0) * (2.0*3.14159265358979323846*this->wheelDistance ) * this->posPerOneCm;
+    const int targetPos = (std::abs(degrees)/360.0) * (2.0*3.14159265358979323846*this->wheelDistance ) * this->posPerOneCm;
 
     // 3. Power both motors
     motor_power(this->leftWheelPin, leftPercentPower);
