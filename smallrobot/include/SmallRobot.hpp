@@ -4,7 +4,8 @@
 class SmallRobot
 {
 private:
-    const int wheelRadius = 1;
+    const int wheelRadius = 1; // Both are in inches
+    const int wheelDistance = 1; // Distance between the wheels across the robot body; the length of the axle connecting the two wheels if there was an axle
     int leftWheelPin;
     int rightWheelPin;
     float posPerOneCm;
@@ -19,7 +20,9 @@ public:
     void moveForwardContinuous();      // Moves continously forward
     void moveBackwardContinuous();         // Moves contiously backwards
 
-    void rotate(int degrees); // Rotates a certain amount of degrees clockwise. Accepts values from -360 to 360. Blocking.
+    void rotate(int degrees, int percentPower); // Rotates a certain amount of degrees clockwise. Accepts values from -360 to 360. Blocking.
+    void rotateAndCorrect(int degrees, int percentPower); // Rotates a certain amount of degrees clockwise. Accepts values from -360 to 360. Blocking.
+
     void turnLeftContinuous();          // Turns left continously
     void turnRightContinuous();         // Turns right continously
 
