@@ -206,7 +206,41 @@ void SmallRobot::rotateAndCorrect(int degrees, int percentPower)
 
 void SmallRobot::rotate(int degrees, int percentPower)
 {
+    // 1. Clear counters, change percentPower
+    int leftPercentPower = percentPower;
+    int rightPercentPower = percentPower; 
 
+    cmpc(this->leftWheelPin);
+    cmpc(this->rightWheelPin);
+
+    if (degrees < 0)
+    {
+        leftPercentPower *= -1;
+    }
+    else
+    {
+        rightPercentPower *= -1
+    }
+
+    // 2. Calc target counter pos
+    const int targetPos = (std::abs(degrees)/360.0) * (2.0*3.14159265358979323846*this->wheelDistance ) * this->posPerOneCm;
+
+    // 3. Power both motors
+    motor_power(this->leftWheelPin, leftPercentPower);
+    motor_power(this->rightWheelPin, rightPercentPower);
+
+    // 4. while loop
+    int leftWheelPos = std::abs(gmpc(this->leftWheelPin));
+    int rightWheelPos = std::abs(gmpc(this->rightWheelPin));
+    while ( leftWheelPos <= targetPos && rightWheelPos <= targetPos && condition)
+    {
+        leftWheelPos = std::abs(gmpc(this->leftWheelPin));
+        rightWheelPos = std::abs(gmpc(this->rightWheelPin));
+    }
+
+    // 5. If either motor's pos is beyond the target, stop both motors.
+    freeze(this->leftWheelPin);
+    freeze(this->rightWheelPin);
 }
 
 void SmallRobot::turnLeftContinuous()
