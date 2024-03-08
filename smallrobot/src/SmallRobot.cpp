@@ -70,6 +70,32 @@ void SmallRobot::moveForwardDistanceAndCorrect(int distance, int percentPower, b
     freeze(this->rightWheelPin);
 }
 
+void SmallRobot::moveForwardDistance(int distance, int percentPower, bool condition=true)
+{
+    // 1. Clear counters
+    cmpc(this->leftWheelPin);
+    cmpc(this->rightWheelPin);
+
+    // 2. Calc target counter pos
+    const int targetPos = distance * this->posPerOneCm;
+
+    // 3. Power both motors
+    motor_power(this->leftWheelPin, percentPower);
+    motor_power(this->rightWheelPin, percentPower);
+
+    // 4. while loop
+    int leftWheelPos = gmpc(this->leftWheelPin);
+    int rightWheelPos = gmpc(this->rightWheelPin);
+    while ( leftWheelPos <= targetPos && rightWheelPos <= targetPos && condition)
+    {
+        leftWheelPos = gmpc(this->leftWheelPin);
+        rightWheelPos = gmpc(this->rightWheelPin);
+    }
+
+    // 5. If either motor's pos is beyond the target, stop both motors.
+    freeze(this->leftWheelPin);
+    freeze(this->rightWheelPin);
+}
 
 void SmallRobot::moveForward()
 {
