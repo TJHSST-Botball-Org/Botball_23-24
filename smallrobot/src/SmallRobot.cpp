@@ -128,11 +128,6 @@ void SmallRobot::moveBackwardContinuous()
 
 }
 
-void SmallRobot::stopMove()
-{
-
-}
-
 void SmallRobot::rotate(int degrees)
 {
 
@@ -148,7 +143,9 @@ void SmallRobot::turnRightContinuous()
 
 }
 
-void SmallRobot::stopTurn()
+void SmallRobot::freeze()
 {
-
+    /* Stops all turns and forward/backward movement */
+    freeze(this->leftWheelPin);
+    freeze(this->rightWheelPin);
 }

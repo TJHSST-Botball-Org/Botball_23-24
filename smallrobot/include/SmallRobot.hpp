@@ -18,12 +18,12 @@ public:
 
     void moveForwardContinuous();      // Moves continously forward
     void moveBackwardContinuous();         // Moves contiously backwards
-    void stopMove();
 
     void rotate(int degrees); // Rotates a certain amount of degrees clockwise. Accepts values from -360 to 360. Blocking.
     void turnLeftContinuous();          // Turns left continously
     void turnRightContinuous();         // Turns right continously
-    void stopTurn();
+
+    void freeze(); // Stops all turns and forward/backward movement.
 
     // TODO: ADD SMALL ROBOT SPECIFIC FUNCTIONS LATER
 };
