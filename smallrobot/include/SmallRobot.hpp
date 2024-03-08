@@ -5,11 +5,15 @@ class SmallRobot
 {
 private:
     const int wheelRadius = 1;
+    int leftWheelPin;
+    int rightWheelPin;
 
 public:
+    SmallRobot(int leftWheelPin, int rightWheelPin);
+
     void move(int distance); // Moves for some distance, blocking
     void moveForward();      // Moves continously forward
-    void moveBack();         // Moves contiously backwards
+    void moveBackward();         // Moves contiously backwards
     void stopMove();
 
     void rotate(int degrees); // Rotates a certain amount of degrees clockwise. Accepts values from -360 to 360. Blocking.
@@ -18,4 +22,4 @@ public:
     void stopTurn();
 
     // TODO: ADD SMALL ROBOT SPECIFIC FUNCTIONS LATER
-}
+};
