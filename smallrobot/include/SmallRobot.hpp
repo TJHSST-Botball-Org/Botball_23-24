@@ -11,7 +11,7 @@ private:
 public:
     SmallRobot(int leftWheelPin, int rightWheelPin);
 
-    void move(int distance); // Moves for some distance, blocking
+    void moveAndCorrect(int distance, bool condition=true); // Moves for some distance, blocking
     void moveForward();      // Moves continously forward
     void moveBackward();         // Moves contiously backwards
     void stopMove();
