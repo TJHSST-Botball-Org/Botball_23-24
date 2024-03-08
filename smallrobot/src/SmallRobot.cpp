@@ -33,7 +33,7 @@ void SmallRobot::moveForwardDistanceAndCorrect(int distance, int percentPower, b
     // 2. Calc target counter pos
     const int targetPos = distance * this->posPerOneCm;
 
-    // 3. Full power both motors
+    // 3. Power both motors
     motor_power(this->leftWheelPin, percentPower);
     motor_power(this->rightWheelPin, percentPower);
 
