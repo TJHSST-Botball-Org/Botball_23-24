@@ -16,13 +16,13 @@ public:
     void moveDistance(int distance, int percentPower, bool condition=true); // Same as moveForwardDistanceAndCorrect, but does not correct
 
 
-    void moveForward();      // Moves continously forward
-    void moveBackward();         // Moves contiously backwards
+    void moveForwardContinuous();      // Moves continously forward
+    void moveBackwardContinuous();         // Moves contiously backwards
     void stopMove();
 
     void rotate(int degrees); // Rotates a certain amount of degrees clockwise. Accepts values from -360 to 360. Blocking.
-    void turnLeft();          // Turns left continously
-    void turnRight();         // Turns right continously
+    void turnLeftContinuous();          // Turns left continously
+    void turnRightContinuous();         // Turns right continously
     void stopTurn();
 
     // TODO: ADD SMALL ROBOT SPECIFIC FUNCTIONS LATER
