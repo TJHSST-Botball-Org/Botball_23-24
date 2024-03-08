@@ -8,7 +8,7 @@ SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin) {
     this->posPerOneCm = 1500 / (2.0*3.14159265358979323846*this->wheelRadius);
 }
 
-void SmallRobot::moveAndCorrect(int distance, int percentPower, bool condition=true)
+void SmallRobot::moveForwardDistanceAndCorrect(int distance, int percentPower, bool condition=true)
 {
     /* 
     Moves forward a certain distance in inches while trying to keep straight, blocking. Clears the pos counter. 
