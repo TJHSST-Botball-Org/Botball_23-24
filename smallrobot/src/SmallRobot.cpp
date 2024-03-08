@@ -4,9 +4,11 @@
 SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin) {
     this->leftWheelPin = leftWheelPin;
     this->rightWheelPin = rightWheelPin;
+
+    this->posPerOneCm = 1500 / (2.0*3.14159265358979323846*this->wheelRadius);
 }
 
-void SmallRobot::moveAndCorrect(int distance, bool condition=true)
+void SmallRobot::moveAndCorrect(int distance, int percentPower, bool condition=true)
 {
     /* 
     Moves forward a certain distance in inches while trying to keep straight, blocking. Clears the pos counter. 
@@ -29,11 +31,11 @@ void SmallRobot::moveAndCorrect(int distance, bool condition=true)
     cmpc(this->rightWheelPin);
 
     // 2. Calc target counter pos
-    const int targetPos = 
+    const int targetPos = distance * this->posPerOneCm;
 
     // 3. Full power both motors
-    fd(this->leftWheelPin);
-    fd(this->rightWheelPin);
+    motor_power(this->leftWheelPin, percentPower);
+    motor_power(this->rightWheelPin, percentPower);
 
     // 4. while loop
     int leftWheelPos = gmpc(this->leftWheelPin);
@@ -41,20 +43,22 @@ void SmallRobot::moveAndCorrect(int distance, bool condition=true)
     while ( leftWheelPos <= targetPos && rightWheelPos <= targetPos && condition)
     {
         // 5. If one motor is more ahead than the other, stop that motor for a bit
+
+        // Using freeze because docs say it has brake??? Not exactly sure but it would work regardless
         if (leftWheelPos > rightWheelPos)
         {
             freeze(this->leftWheelPin);
-            fd(this->rightWheelPin);
+            motor_power(this->rightWheelPin, percentPower);
         }
         else if (leftWheelPos < rightWheelPos)
         {
-            fd(this->leftWheelPin);
+            motor_power(this->leftWheelPin, percentPower);
             freeze(this->rightWheelPin);
         }
         else
         {
-            fd(this->leftWheelPin);
-            fd(this->rightWheelPin);
+            motor_power(this->leftWheelPin, percentPower);
+            motor_power(this->rightWheelPin, percentPower);
         }
 
         leftWheelPos = gmpc(this->leftWheelPin);
@@ -65,6 +69,7 @@ void SmallRobot::moveAndCorrect(int distance, bool condition=true)
     freeze(this->leftWheelPin);
     freeze(this->rightWheelPin);
 }
+
 
 void SmallRobot::moveForward()
 {
