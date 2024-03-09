@@ -1,5 +1,5 @@
 #pragma once
-#include <kipr/wombat.hpp>
+#include <kipr/wombat.h>
 
 class SmallRobot
 {
@@ -25,7 +25,7 @@ public:
     void turnLeftContinuous(int percentPower);          // Turns left continously. Percent power 0-100
     void turnRightContinuous(int percentPower);         // Turns right continously. Percent power 0-100
 
-    void freeze(); // Stops all turns and forward/backward movement.
+    void stop(); // Stops all turns and forward/backward movement.
 
     // TODO: ADD SMALL ROBOT SPECIFIC FUNCTIONS LATER
 };
