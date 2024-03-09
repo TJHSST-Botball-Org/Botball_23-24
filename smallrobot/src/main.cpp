@@ -7,6 +7,6 @@ int main()
     //Easy Robot Route (All Items on board, Optional: Return to Starting box at the end )
     SmallRobot robot(0, 1);
 
-    robot.
+    robot.moveDistance()
     return 0;
 }

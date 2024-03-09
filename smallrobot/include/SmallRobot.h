@@ -6,16 +6,19 @@ class SmallRobot
 private:
     const int wheelRadius = 1; // Both are in inches
     const int wheelDistance = 1; // Distance between the wheels across the robot body; the length of the axle connecting the two wheels if there was an axle
+    const int blackLineThreshold; //Light Sensor threshold for a black line
     int leftWheelPin;
     int rightWheelPin;
+    int leftLightPin;
+    int rightLightPin;
     float posPerOneCm;
 
 public:
-    SmallRobot(int leftWheelPin, int rightWheelPin);
+    SmallRobot(int leftWheelPin, int rightWheelPin, int leftColorPin = -1, int rightColorPin = -1);
 
     void moveDistanceAndCorrect(int distance, int percentPower, bool condition=true); // Moves for some distance, blocking
     void moveDistance(int distance, int percentPower, bool condition=true); // Same as moveForwardDistanceAndCorrect, but does not correct
-
+    void moveUntilBlackLine(int percentPower);//Blocking, and goes forward until both light sensors see black lines
 
     void moveContinuous(int percentPower);      // Moves continously forward/backwards. percentPower -100 to 100
 

@@ -2,10 +2,11 @@
 #include <kipr/wombat.h>
 #include <cmath>
 
-SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin) {
+SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin, int leftLightPin = -1, int rightLightPin = -1) {
     this->leftWheelPin = leftWheelPin;
     this->rightWheelPin = rightWheelPin;
-
+    this->leftLightPin =leftLightPin;
+    this->rightLightPin=rightLightPin;
     this->posPerOneCm = 1500 / (2.0*3.14159265358979323846*this->wheelRadius);
 }
 
@@ -117,6 +118,20 @@ void SmallRobot::moveDistance(int distance, int percentPower, bool condition)
     freeze(this->leftWheelPin);
     freeze(this->rightWheelPin);
 }
+
+void SmallRobot::moveUntilBlackLine(int percentPower):
+
+    cmpc(this->leftWheelPin);
+    cmpc(this->rightWheelPin);
+
+    motor_power(this->leftWheelPin, percentPower);
+    motor_power(this->rightWheelPin, percentPower);
+    while(analog(leftLightPin)<blackLineThreshold and analog(leftLightPin)<blackLineThreshold){
+
+
+    }
+    freeze(this->leftWheelPin);
+    freeze(this->rightWheelPin);
 
 void SmallRobot::moveContinuous(int percentPower)
 {
