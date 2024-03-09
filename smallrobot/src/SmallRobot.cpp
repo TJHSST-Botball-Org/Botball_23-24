@@ -243,14 +243,16 @@ void SmallRobot::rotate(int degrees, int percentPower)
     freeze(this->rightWheelPin);
 }
 
-void SmallRobot::turnLeftContinuous()
+void SmallRobot::turnLeftContinuous(int percentPower=100)
 {
-
+    motor_power(this->leftWheelPin, -1*percentPower);
+    motor_power(this->rightWheelPin, percentPower);
 }
 
-void SmallRobot::turnRightContinuous()
+void SmallRobot::turnRightContinuous(int percentPower=100)
 {
-
+    motor_power(this->leftWheelPin, percentPower);
+    motor_power(this->rightWheelPin, -1*percentPower);
 }
 
 void SmallRobot::freeze()

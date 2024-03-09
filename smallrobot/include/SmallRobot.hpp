@@ -23,8 +23,8 @@ public:
     void rotate(int degrees, int percentPower); // Rotates a certain amount of degrees clockwise. Accepts values from -360 to 360. Blocking.
     void rotateAndCorrect(int degrees, int percentPower); // Rotates a certain amount of degrees clockwise. Accepts values from -360 to 360. Blocking.
 
-    void turnLeftContinuous();          // Turns left continously
-    void turnRightContinuous();         // Turns right continously
+    void turnLeftContinuous(int percentPower=100);          // Turns left continously
+    void turnRightContinuous(int percentPower=100);         // Turns right continously
 
     void freeze(); // Stops all turns and forward/backward movement.
 
