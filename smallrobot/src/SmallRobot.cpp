@@ -118,14 +118,10 @@ void SmallRobot::moveDistance(int distance, int percentPower, bool condition=tru
     freeze(this->rightWheelPin);
 }
 
-void SmallRobot::moveForwardContinuous()
+void SmallRobot::moveContinuous(int percentPower)
 {
-
-}
-
-void SmallRobot::moveBackwardContinuous()
-{
-
+    motor_power(this->leftWheelPin, percentPower);
+    motor_power(this->rightWheelPin, percentPower);
 }
 
 void SmallRobot::rotateAndCorrect(int degrees, int percentPower)
@@ -243,13 +239,13 @@ void SmallRobot::rotate(int degrees, int percentPower)
     freeze(this->rightWheelPin);
 }
 
-void SmallRobot::turnLeftContinuous(int percentPower=100)
+void SmallRobot::turnLeftContinuous(int percentPower)
 {
     motor_power(this->leftWheelPin, -1*percentPower);
     motor_power(this->rightWheelPin, percentPower);
 }
 
-void SmallRobot::turnRightContinuous(int percentPower=100)
+void SmallRobot::turnRightContinuous(int percentPower)
 {
     motor_power(this->leftWheelPin, percentPower);
     motor_power(this->rightWheelPin, -1*percentPower);
