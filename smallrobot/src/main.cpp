@@ -1,10 +1,12 @@
 #include <iostream>
-#include <SmallRobot.h>
 #include "include/OpMode.hpp"
+#include <SmallRobot.hpp>
 
-int main()
+int main() 
 {
-    SmallRobot robot(0, 3);
+    //Easy Robot Route (All Items on board, Optional: Return to Starting box at the end )
+    SmallRobot robot(0, 1);
 
-    robot.moveContinuous(100);
+    robot.
+    return 0;
 }
