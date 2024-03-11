@@ -10,18 +10,18 @@ SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin, int leftLightPin = -
     this->posPerOneCm = 1500 / (2.0*3.14159265358979323846*this->wheelRadius);
 }
 
-void SmallRobot::moveDistanceAndCorrect(int distance, int percentPower, bool condition)
+void SmallRobot::moveDistanceAndCorrect(int distance, int ticksPerSecond, bool condition, bool debug)
 {
     /* 
     Moves forward a certain distance in inches while trying to keep straight, blocking. Clears the pos counter. 
     Will block while distance is not reached AND condition is true.
 
     distance: distance in inches, negative to go backwards
-    percentPower: number between 0 and 100, the power percent to use
+    ticksPerSecond: number between 0 and 1500, the power percent to use
     */
 
     /* PSEUDOCODE
-    1. Clear counters, change percentPower
+    1. Clear counters, change ticksPerSecond
     2. Calculate target counter pos based on distance and wheel radius
     3. Full power both motors
     4. While both motors are not at target counter:
@@ -31,47 +31,60 @@ void SmallRobot::moveDistanceAndCorrect(int distance, int percentPower, bool con
     6. If either motor's pos is beyond the target, stop both motors.
     */
 
-    // 1. Clear counters, change percentPower
-    cmpc(this->leftWheelPin);
-    cmpc(this->rightWheelPin);
+    if (debug)
+    {
+        std::cout << "RUNNING moveDistanceAndCorrect\n";
+        std::cout << "Left pos,Right pos,Left speed,Right speed,Pos diff,Speed diff\n" << std::flush;
+    }
+
+    // 1. Make distance positive
+
+    int speedMulti = 1;
 
     if (distance < 0)
     {
-        percentPower *= -1;
+        speedMulti = -1;
         distance *= -1;
     }
 
-    // FROM HERE ON FORWARDS distance WILL BE POSITIVE, AND percentPower IS IN THE CORRECT DIRECTION
+    // Move the speed and distance will not be positive
 
     // 2. Calc target counter pos
     const int targetPos = distance * this->posPerOneCm;
 
     // 3. Power both motors
-    motor_power(this->leftWheelPin, percentPower);
-    motor_power(this->rightWheelPin, percentPower);
+    move_at_velocity(this->leftWheelPin, ticksPerSecond);
+    move_at_velocity(this->rightWheelPin, ticksPerSecond);
 
     // 4. while loop
     int leftWheelPos = std::abs(gmpc(this->leftWheelPin));
     int rightWheelPos = std::abs(gmpc(this->rightWheelPin));
     while ( leftWheelPos <= targetPos && rightWheelPos <= targetPos && condition)
     {
-        // 5. If one motor is more ahead than the other, stop that motor for a bit
+        // 5. If one motor is more ahead than the other, decrease the speed of that motor to correct
+
+        int leftVelocity = ticksPerSecond;
+        int rightVelocity = ticksPerSecond;
 
         // Using freeze because docs say it has brake??? Not exactly sure but it would work regardless
         if (leftWheelPos > rightWheelPos)
         {
-            freeze(this->leftWheelPin);
-            motor_power(this->rightWheelPin, percentPower);
+            leftVelocity = ticksPerSecond - (leftWheelPos - rightWheelPos);
         }
         else if (leftWheelPos < rightWheelPos)
         {
-            motor_power(this->leftWheelPin, percentPower);
-            freeze(this->rightWheelPin);
+            rightVelocity = ticksPerSecond - (rightWheelPos - leftWheelPos));
         }
-        else
+
+        leftVelocity *= speedMulti;
+        rightVelocity *= speedMulti;
+        
+        move_at_velocity(this->leftWheelPin, leftVelocity);
+        move_at_velocity(this->rightWheelPin, rightVelocity);
+
+        if (debug)
         {
-            motor_power(this->leftWheelPin, percentPower);
-            motor_power(this->rightWheelPin, percentPower);
+            cout << leftWheelPos + "," + rightWheelPos + "," + leftVelocity + "," + rightVelocity + "," + (leftWheelPos - rightWheelPos) + "," + (leftVelocity - rightVelocity);
         }
 
         leftWheelPos = std::abs(gmpc(this->leftWheelPin));

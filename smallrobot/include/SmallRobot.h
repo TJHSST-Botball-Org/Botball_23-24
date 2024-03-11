@@ -16,8 +16,8 @@ private:
 public:
     SmallRobot(int leftWheelPin, int rightWheelPin, int leftColorPin = -1, int rightColorPin = -1);
 
-    void moveDistanceAndCorrect(int distance, int percentPower, bool condition=true); // Moves for some distance, blocking
-    void moveDistance(int distance, int percentPower, bool condition=true); // Same as moveForwardDistanceAndCorrect, but does not correct
+    void moveDistanceAndCorrect(int distance, int ticksPerSecond, bool condition=true, bool debug=false); // Moves for some distance, blocking. Ticks can be 0 to 1500, to go backwards make distance negative.
+    void moveDistance(int distance, int ticksPerSecond, bool condition=true); // Same as moveForwardDistanceAndCorrect, but does not correct
     void moveUntilBlackLine(int percentPower);//Blocking, and goes forward until both light sensors see black lines
 
     void moveContinuous(int percentPower);      // Moves continously forward/backwards. percentPower -100 to 100
