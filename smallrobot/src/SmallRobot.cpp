@@ -15,7 +15,7 @@ SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin, int wheelDistance, i
 void SmallRobot::moveDistanceAndCorrect(int distance, int ticksPerSecond, bool condition)
 {
     /*
-    Moves forward a certain distance in inches while trying to keep straight, blocking. Clears the pos counter.
+    Moves forward a certain distance in inches while trying to keep straight, blocking.
     Will block while distance is not reached AND condition is true.
 
     distance: distance in inches, negative to go backwards
