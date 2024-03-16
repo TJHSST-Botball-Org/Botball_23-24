@@ -3,9 +3,10 @@
 #include <cmath>
 #include <iostream>
 
+
 const float PI = 3.14159265358979323846;
 
-SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin, float wheelDistance, float wheelRadius, int leftTicksPerRevolution, int rightTicksPerRevolution)
+SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin, float wheelDistance, float wheelRadius, int leftTicksPerRevolution, int rightTicksPerRevolution, int leftLightPin, int rightLightPin)
 {
     this->leftWheelPin = leftWheelPin;
     this->rightWheelPin = rightWheelPin;
@@ -13,6 +14,9 @@ SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin, float wheelDistance,
     this->wheelRadius = wheelRadius;
     this->leftTicksPerRevolution = leftTicksPerRevolution;
     this->rightTicksPerRevolution = rightTicksPerRevolution;
+    
+    this->leftLightPin =leftLightPin;
+    this->rightLightPin=rightLightPin;
 
     this->leftPosPerOneInch = leftTicksPerRevolution / (2.0 * PI * this->wheelRadius);
     this->rightPosPerOneInch = rightTicksPerRevolution / (2.0 * PI * this->wheelRadius);
@@ -187,7 +191,22 @@ void SmallRobot::moveDistance(float distance, int ticksPerSecond, bool condition
     freeze(this->rightWheelPin);
 }
 
+void SmallRobot::moveUntilBlackLine(int percentPower):
+
+    cmpc(this->leftWheelPin);
+    cmpc(this->rightWheelPin);
+
+    motor_power(this->leftWheelPin, percentPower);
+    motor_power(this->rightWheelPin, percentPower);
+    while(analog(leftLightPin)<blackLineThreshold and analog(leftLightPin)<blackLineThreshold){
+
+
+    }
+    freeze(this->leftWheelPin);
+    freeze(this->rightWheelPin);
+
 void SmallRobot::rotateAndCorrect(int degrees, int ticksPerSecond, bool condition)
+
 {
 
     /* PSEUDOCODE
