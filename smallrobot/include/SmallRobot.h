@@ -4,17 +4,20 @@
 class SmallRobot
 {
 private:
-    int wheelRadius;   // Both are in inches
-    int wheelDistance; // Distance between the wheels across the robot body; the length of the axle connecting the two wheels if there was an axle
+    float wheelRadius;   // Both are in inches
+    float wheelDistance; // Distance between the wheels across the robot body; the length of the axle connecting the two wheels if there was an axle
     int leftWheelPin;
     int rightWheelPin;
-    float posPerOneInch;
+    int leftTicksPerRevolution;
+    int rightTicksPerRevolution;
+    int leftPosPerOneInch;
+    int rightPosPerOneInch;
 
 public:
-    SmallRobot(int leftWheelPin, int rightWheelPin, int wheelDistance, int wheelRadius);
+    SmallRobot(int leftWheelPin, int rightWheelPin, float wheelDistance, float wheelRadius, int leftTicksPerRevolution, int rightTicksPerRevolution);
 
-    void moveDistanceAndCorrect(int distance, int ticksPerSecond, bool condition = true);   // Moves for some distance, blocking
-    void moveDistance(int distance, int percentPticksPerSecondower, bool condition = true); // Same as moveForwardDistanceAndCorrect, but does not correct
+    void moveDistanceAndCorrect(float distance, int ticksPerSecond, bool condition = true); // Moves for some distance, blocking
+    void moveDistance(float distance, int ticksPerSecond, bool condition = true);           // Same as moveForwardDistanceAndCorrect, but does not correct
 
     void moveContinuous(int percentPower); // Moves continously forward/backwards. percentPower -100 to 100
 

@@ -1,20 +1,27 @@
 #include "../include/SmallRobot.h"
 #include <kipr/wombat.h>
 #include <cmath>
+#include <iostream>
 
-const int PI = 3.14159265358979323846;
+const float PI = 3.14159265358979323846;
 
-SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin, int wheelDistance, int wheelRadius)
+SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin, float wheelDistance, float wheelRadius, int leftTicksPerRevolution, int rightTicksPerRevolution)
 {
     this->leftWheelPin = leftWheelPin;
     this->rightWheelPin = rightWheelPin;
     this->wheelDistance = wheelDistance;
     this->wheelRadius = wheelRadius;
+    this->leftTicksPerRevolution = leftTicksPerRevolution;
+    this->rightTicksPerRevolution = rightTicksPerRevolution;
 
-    this->posPerOneInch = 1500 / (2.0 * PI * this->wheelRadius);
+    this->leftPosPerOneInch = leftTicksPerRevolution / (2.0 * PI * this->wheelRadius);
+    this->rightPosPerOneInch = rightTicksPerRevolution / (2.0 * PI * this->wheelRadius);
+
+    std::cout << "this is leftPosPerOneInch " << leftPosPerOneInch << "\n"
+              << std::flush;
 }
 
-void SmallRobot::moveDistanceAndCorrect(int distance, int ticksPerSecond, bool condition)
+void SmallRobot::moveDistanceAndCorrect(float distance, int ticksPerSecond, bool condition)
 {
     /*
     Moves forward a certain distance in inches while trying to keep straight, blocking.
@@ -57,8 +64,13 @@ void SmallRobot::moveDistanceAndCorrect(int distance, int ticksPerSecond, bool c
     }
 
     // 2. Calc target counter pos
-    const int leftWheelTargetPos = distance * this->posPerOneInch + gmpc(this->leftWheelPin);
-    const int rightWheelTargetPos = distance * this->posPerOneInch + gmpc(this->rightWheelPin);
+
+    std::cout << "this is leftWheelTargetPos " << distance * this->leftPosPerOneInch + gmpc(this->leftWheelPin)
+              << "\n"
+              << std::flush;
+
+    const int leftWheelTargetPos = distance * this->leftPosPerOneInch + gmpc(this->leftWheelPin);
+    const int rightWheelTargetPos = distance * this->rightPosPerOneInch + gmpc(this->rightWheelPin);
 
     // 3. Store the SPEED (not velocity, because they never go negative) of the two motors.
     int leftWheelSpeed = ticksPerSecond;
@@ -107,7 +119,7 @@ void SmallRobot::moveDistanceAndCorrect(int distance, int ticksPerSecond, bool c
     freeze(this->rightWheelPin);
 }
 
-void SmallRobot::moveDistance(int distance, int ticksPerSecond, bool condition)
+void SmallRobot::moveDistance(float distance, int ticksPerSecond, bool condition)
 {
     /*
     Moves forward a certain distance in inches, blocking.
@@ -147,8 +159,8 @@ void SmallRobot::moveDistance(int distance, int ticksPerSecond, bool condition)
     }
 
     // 2. Calc target counter pos
-    const int leftWheelTargetPos = distance * this->posPerOneInch + gmpc(this->leftWheelPin);
-    const int rightWheelTargetPos = distance * this->posPerOneInch + gmpc(this->rightWheelPin);
+    const int leftWheelTargetPos = distance * this->leftPosPerOneInch + gmpc(this->leftWheelPin);
+    const int rightWheelTargetPos = distance * this->rightPosPerOneInch + gmpc(this->rightWheelPin);
 
     // 3. Store the SPEED (not velocity, because they never go negative) of the two motors.
     int leftWheelSpeed = ticksPerSecond;
@@ -217,10 +229,10 @@ void SmallRobot::rotateAndCorrect(int degrees, int ticksPerSecond, bool conditio
     }
 
     // 2. Calc target counter pos
-    const int circleCircumference = PI * this->wheelDistance;
+    const float circleCircumference = PI * this->wheelDistance;
 
-    const int leftWheelTargetPos = (std::abs(degrees) / 360.0) * circleCircumference * posPerOneInch * leftMultiplier + gmpc(this->leftWheelPin);
-    const int rightWheelTargetPos = (std::abs(degrees) / 360.0) * circleCircumference * posPerOneInch * rightMultiplier + gmpc(this->rightWheelPin);
+    const int leftWheelTargetPos = (std::abs(degrees) / 360.0) * circleCircumference * leftPosPerOneInch * leftMultiplier + gmpc(this->leftWheelPin);
+    const int rightWheelTargetPos = (std::abs(degrees) / 360.0) * circleCircumference * rightPosPerOneInch * rightMultiplier + gmpc(this->rightWheelPin);
 
     // 3. Store the SPEED (not velocity, because they never go negative) of the two motors.
     int leftWheelSpeed = ticksPerSecond;
@@ -234,24 +246,45 @@ void SmallRobot::rotateAndCorrect(int degrees, int ticksPerSecond, bool conditio
     move_at_velocity(this->leftWheelPin, leftWheelSpeed * leftMultiplier);
     move_at_velocity(this->rightWheelPin, rightWheelSpeed * rightMultiplier);
 
+    std::cout << "\n"
+              << leftWheelPosition << " " << leftWheelTargetPos << "\n"
+              << std::flush;
+    std::cout << "\n"
+              << rightWheelPosition << " " << rightWheelTargetPos << "\n"
+              << std::flush;
+
     // 6. While loop
-    while (std::abs(leftWheelPosition) <= std::abs(leftWheelTargetPos) && std::abs(rightWheelPosition) <= std::abs(rightWheelTargetPos) && condition)
+    bool loopCondition = true;
+
+    std::cout << loopCondition << "\n"
+              << std::flush;
+
+    while (loopCondition)
     {
+        if (degrees > 0)
+        {
+            loopCondition = leftWheelPosition <= leftWheelTargetPos && rightWheelPosition >= rightWheelTargetPos && condition;
+        }
+        else
+        {
+            loopCondition = leftWheelPosition >= leftWheelTargetPos && rightWheelPosition <= rightWheelTargetPos && condition;
+        }
+
         // 7. Update position counters
         leftWheelPosition = gmpc(this->leftWheelPin);
         rightWheelPosition = gmpc(this->rightWheelPin);
 
         // 8. If one wheel position is greater than the other, decrease the speed of the ahead motor by the difference
         // REMEMBER TO USE ABSOLUTE VALUE OF THE POSITIONS
-        if (std::abs(leftWheelPosition) > std::abs(rightWheelPosition))
+        if (std::abs(std::abs(leftWheelPosition) - std::abs(leftWheelPosition)) > std::abs(std::abs(rightWheelPosition) - std::abs(rightWheelPosition)))
         {
-            leftWheelSpeed = ticksPerSecond - (std::abs(leftWheelPosition) - std::abs(rightWheelPosition));
+            leftWheelSpeed = ticksPerSecond - (std::abs(std::abs(leftWheelPosition) - std::abs(leftWheelPosition)) - std::abs(std::abs(rightWheelPosition) - std::abs(rightWheelPosition)));
             rightWheelSpeed = ticksPerSecond;
         }
-        else if (std::abs(leftWheelPosition) < std::abs(rightWheelPosition))
+        else if (std::abs(std::abs(leftWheelPosition) - std::abs(leftWheelPosition)) < std::abs(std::abs(rightWheelPosition) - std::abs(rightWheelPosition)))
         {
-            leftWheelSpeed = ticksPerSecond;
-            rightWheelSpeed = ticksPerSecond - (std::abs(rightWheelPosition) - std::abs(leftWheelPosition));
+            leftWheelSpeed = ticksPerSecond - (std::abs(std::abs(rightWheelPosition) - std::abs(rightWheelPosition)) - std::abs(std::abs(leftWheelPosition) - std::abs(leftWheelPosition)));
+            rightWheelSpeed = ticksPerSecond;
         }
         else
         {
@@ -288,7 +321,8 @@ void SmallRobot::rotate(int degrees, int percentPower, bool condition)
     }
 
     // 2. Calc target counter pos
-    const int targetPos = (std::abs(degrees) / 360.0) * (2.0 * 3.14159265358979323846 * this->wheelDistance) * this->posPerOneInch;
+    // TODO: USE TWO DIFFERENT TARGET POS
+    const int targetPos = (std::abs(degrees) / 360.0) * (2.0 * 3.14159265358979323846 * this->wheelDistance) * this->leftPosPerOneInch;
 
     // 3. Power both motors
     motor_power(this->leftWheelPin, leftPercentPower);
