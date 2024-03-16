@@ -74,8 +74,8 @@ void SmallRobot::moveDistanceAndCorrect(int distance, int ticksPerSecond, bool c
     while (std::abs(leftWheelPosition) <= std::abs(leftWheelTargetPos) && std::abs(rightWheelPosition) <= std::abs(rightWheelTargetPos) && condition)
     {
         // 7. Update position counters
-        int leftWheelPosition = gmpc(this->leftWheelPin);
-        int rightWheelPosition = gmpc(this->rightWheelPin);
+        leftWheelPosition = gmpc(this->leftWheelPin);
+        rightWheelPosition = gmpc(this->rightWheelPin);
 
         // 8. If one wheel position is greater than the other, decrease the speed of the ahead motor by the difference
         // REMEMBER TO USE ABSOLUTE VALUE OF THE POSITIONS
