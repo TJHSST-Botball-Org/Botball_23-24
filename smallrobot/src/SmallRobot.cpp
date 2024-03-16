@@ -2,17 +2,20 @@
 #include <kipr/wombat.h>
 #include <cmath>
 
-SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin) {
+SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin, int wheelDistance, int wheelRadius)
+{
     this->leftWheelPin = leftWheelPin;
     this->rightWheelPin = rightWheelPin;
+    this->wheelDistance = wheelDistance;
+    this->wheelRadius = wheelRadius;
 
-    this->posPerOneCm = 1500 / (2.0*3.14159265358979323846*this->wheelRadius);
+    this->posPerOneCm = 1500 / (2.0 * 3.14159265358979323846 * this->wheelRadius);
 }
 
 void SmallRobot::moveDistanceAndCorrect(int distance, int percentPower, bool condition)
 {
-    /* 
-    Moves forward a certain distance in inches while trying to keep straight, blocking. Clears the pos counter. 
+    /*
+    Moves forward a certain distance in inches while trying to keep straight, blocking. Clears the pos counter.
     Will block while distance is not reached AND condition is true.
 
     distance: distance in inches, negative to go backwards
@@ -52,7 +55,7 @@ void SmallRobot::moveDistanceAndCorrect(int distance, int percentPower, bool con
     // 4. while loop
     int leftWheelPos = std::abs(gmpc(this->leftWheelPin));
     int rightWheelPos = std::abs(gmpc(this->rightWheelPin));
-    while ( leftWheelPos <= targetPos && rightWheelPos <= targetPos && condition)
+    while (leftWheelPos <= targetPos && rightWheelPos <= targetPos && condition)
     {
         // 5. If one motor is more ahead than the other, stop that motor for a bit
 
@@ -96,7 +99,6 @@ void SmallRobot::moveDistance(int distance, int percentPower, bool condition)
 
     // FROM HERE ON FORWARDS distance WILL BE POSITIVE, AND percentPower IS IN THE CORRECT DIRECTION
 
-
     // 2. Calc target counter pos
     const int targetPos = distance * this->posPerOneCm;
 
@@ -107,7 +109,7 @@ void SmallRobot::moveDistance(int distance, int percentPower, bool condition)
     // 4. while loop
     int leftWheelPos = std::abs(gmpc(this->leftWheelPin));
     int rightWheelPos = std::abs(gmpc(this->rightWheelPin));
-    while ( leftWheelPos <= targetPos && rightWheelPos <= targetPos && condition)
+    while (leftWheelPos <= targetPos && rightWheelPos <= targetPos && condition)
     {
         leftWheelPos = std::abs(gmpc(this->leftWheelPin));
         rightWheelPos = std::abs(gmpc(this->rightWheelPin));
@@ -126,8 +128,8 @@ void SmallRobot::moveContinuous(int percentPower)
 
 void SmallRobot::rotateAndCorrect(int degrees, int percentPower)
 {
-    /* 
-    Rotates forward a certain amount of degrees clockwise while correcting for inherent motor power differences, blocking. Clears the pos counter. 
+    /*
+    Rotates forward a certain amount of degrees clockwise while correcting for inherent motor power differences, blocking. Clears the pos counter.
 
     degrees: degrees to rotate clockwise. Use negative numbers to rotate counterclockwise.
     percentPower: number between 0 and 100, the power percent to use
@@ -146,7 +148,7 @@ void SmallRobot::rotateAndCorrect(int degrees, int percentPower)
 
     // 1. Clear counters, change percentPower
     int leftPercentPower = percentPower;
-    int rightPercentPower = percentPower; 
+    int rightPercentPower = percentPower;
 
     cmpc(this->leftWheelPin);
     cmpc(this->rightWheelPin);
@@ -161,7 +163,7 @@ void SmallRobot::rotateAndCorrect(int degrees, int percentPower)
     }
 
     // 2. Calc target counter pos
-    const int targetPos = (std::abs(degrees)/360.0) * (2.0*3.14159265358979323846*this->wheelDistance ) * this->posPerOneCm;
+    const int targetPos = (std::abs(degrees) / 360.0) * (2.0 * 3.14159265358979323846 * this->wheelDistance) * this->posPerOneCm;
 
     // 3. Power both motors
     motor_power(this->leftWheelPin, leftPercentPower);
@@ -170,7 +172,7 @@ void SmallRobot::rotateAndCorrect(int degrees, int percentPower)
     // 4. while loop
     int leftWheelPos = std::abs(gmpc(this->leftWheelPin));
     int rightWheelPos = std::abs(gmpc(this->rightWheelPin));
-    while ( leftWheelPos <= targetPos && rightWheelPos <= targetPos)
+    while (leftWheelPos <= targetPos && rightWheelPos <= targetPos)
     {
         // 5. If one motor is more ahead than the other, stop that motor for a bit
 
@@ -204,7 +206,7 @@ void SmallRobot::rotate(int degrees, int percentPower)
 {
     // 1. Clear counters, change percentPower
     int leftPercentPower = percentPower;
-    int rightPercentPower = percentPower; 
+    int rightPercentPower = percentPower;
 
     cmpc(this->leftWheelPin);
     cmpc(this->rightWheelPin);
@@ -219,7 +221,7 @@ void SmallRobot::rotate(int degrees, int percentPower)
     }
 
     // 2. Calc target counter pos
-    const int targetPos = (std::abs(degrees)/360.0) * (2.0*3.14159265358979323846*this->wheelDistance ) * this->posPerOneCm;
+    const int targetPos = (std::abs(degrees) / 360.0) * (2.0 * 3.14159265358979323846 * this->wheelDistance) * this->posPerOneCm;
 
     // 3. Power both motors
     motor_power(this->leftWheelPin, leftPercentPower);
@@ -228,7 +230,7 @@ void SmallRobot::rotate(int degrees, int percentPower)
     // 4. while loop
     int leftWheelPos = std::abs(gmpc(this->leftWheelPin));
     int rightWheelPos = std::abs(gmpc(this->rightWheelPin));
-    while ( leftWheelPos <= targetPos && rightWheelPos <= targetPos)
+    while (leftWheelPos <= targetPos && rightWheelPos <= targetPos)
     {
         leftWheelPos = std::abs(gmpc(this->leftWheelPin));
         rightWheelPos = std::abs(gmpc(this->rightWheelPin));
@@ -241,14 +243,14 @@ void SmallRobot::rotate(int degrees, int percentPower)
 
 void SmallRobot::turnLeftContinuous(int percentPower)
 {
-    motor_power(this->leftWheelPin, -1*percentPower);
+    motor_power(this->leftWheelPin, -1 * percentPower);
     motor_power(this->rightWheelPin, percentPower);
 }
 
 void SmallRobot::turnRightContinuous(int percentPower)
 {
     motor_power(this->leftWheelPin, percentPower);
-    motor_power(this->rightWheelPin, -1*percentPower);
+    motor_power(this->rightWheelPin, -1 * percentPower);
 }
 
 void SmallRobot::stop()
