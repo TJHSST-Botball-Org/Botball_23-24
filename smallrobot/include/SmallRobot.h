@@ -18,7 +18,7 @@ public:
 
     void moveContinuous(int percentPower); // Moves continously forward/backwards. percentPower -100 to 100
 
-    void rotateAndCorrect(int degrees, int ticksPerSecond, bool condition = true); // Rotates a certain amount of degrees clockwise. Accepts values from -360 to 360. Blocking.
+    void rotateAndCorrect(int degrees, int ticksPerSecond, bool condition = true); // Rotates a certain amount of degrees clockwise and corrects. Accepts values from -360 to 360. Blocking.
     void rotate(int degrees, int percentPower, bool condition = true);             // Rotates a certain amount of degrees clockwise. Accepts values from -360 to 360. Blocking.
 
     void turnLeftContinuous(int percentPower);  // Turns left continously. Percent power 0-100
