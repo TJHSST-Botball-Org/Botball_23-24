@@ -100,7 +100,7 @@ void SmallRobot::moveDistanceAndCorrect(int distance, int ticksPerSecond, bool c
         move_at_velocity(this->rightWheelPin, rightWheelSpeed * multiplier);
     }
 
-    // 6. If either motor's pos is beyond the target, stop both motors.
+    // 9. If either motor's pos is beyond the target, stop both motors.
     freeze(this->leftWheelPin);
     freeze(this->rightWheelPin);
 }
