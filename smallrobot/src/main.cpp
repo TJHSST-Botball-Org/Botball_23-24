@@ -4,25 +4,26 @@
 
 int main()
 {
+    SmallRobot robot(0, 1, 6.5, 1.375, 1900, 2000);
 
-    //Step 1: Purple
-    robot.moveDistance(4,50);
-    robot.rotate(90,50);
-    robot.turnLeftContinuous(50);
+    // Step 1: Purple
+    robot.moveDistanceAndCorrect(4, 750);
+    robot.rotateAndCorrect(90, 750);
+    robot.turnLeftContinuous(750);
     robot.turnRightContinious(60);
     msleep(5000);
-    robot.moveUntilBlackLine(50):
-    robot.moveDistance(30,45);
-    robot.rotate(-45,45);
-    robot.moveDistance(12,45);
+    // robot.moveUntilBlackLine(50);
+    robot.moveDistanceAndCorrect(30, 700);
+    robot.rotateAndCorrectAndCorrect(-45, 700);
+    robot.moveDistanceAndCorrect(12, 700);
 
-    //Step 2 :Yellow
-    robot.moveDistance(-20,50);
-    robot.rotate(135,45);
-    robot.moveDistance(-25,25);
-    robot.moveDistance(17,50);
-    robot.moveUntilBlackLine(55);
-    robot.rotate(90,45);
+    // Step 2 :Yellow
+    robot.moveDistanceAndCorrect(-20, 750);
+    robot.rotateAndCorrect(135, 700);
+    robot.moveDistanceAndCorrect(-25, 25);
+    robot.moveDistanceAndCorrect(17, 750);
+    // robot.moveUntilBlackLine(55);
+    robot.rotateAndCorrect(90, 700);
 
     return 0;
 }
