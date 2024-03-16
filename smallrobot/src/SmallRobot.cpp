@@ -19,6 +19,9 @@ SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin, float wheelDistance,
 
     this->leftPosPerOneInch = leftTicksPerRevolution / (2.0 * PI * this->wheelRadius);
     this->rightPosPerOneInch = rightTicksPerRevolution / (2.0 * PI * this->wheelRadius);
+    
+    cmpc(this->leftWheelPin);
+    cmpc(this->rightWheelPin);
 
     std::cout << "this is leftPosPerOneInch " << leftPosPerOneInch << "\n"
               << std::flush;
@@ -57,6 +60,9 @@ void SmallRobot::moveDistanceAndCorrect(float distance, int ticksPerSecond, bool
             When you finally actually run the method to change the motor speed, then you multiply the speed by the multiplier.
     9. If either motor's pos is beyond the target position, stop both motors, end method.
     */
+    
+    cmpc(this->leftWheelPin);
+    cmpc(this->rightWheelPin);
 
     // 1. Set up the multiplier
     int multiplier = 1;
@@ -68,10 +74,7 @@ void SmallRobot::moveDistanceAndCorrect(float distance, int ticksPerSecond, bool
 
     // 2. Calc target counter pos
 
-    std::cout << "this is leftWheelTargetPos " << distance * this->leftPosPerOneInch + gmpc(this->leftWheelPin)
-              << "\n"
-              << std::flush;
-
+    
     const int leftWheelTargetPos = distance * this->leftPosPerOneInch + gmpc(this->leftWheelPin);
     const int rightWheelTargetPos = distance * this->rightPosPerOneInch + gmpc(this->rightWheelPin);
 
@@ -84,8 +87,8 @@ void SmallRobot::moveDistanceAndCorrect(float distance, int ticksPerSecond, bool
     int rightWheelPosition = gmpc(this->rightWheelPin);
 
     // 5. Set both motors velocity by setting it to speed times the multiplier.
-    move_at_velocity(this->leftWheelPin, leftWheelSpeed * multiplier);
-    move_at_velocity(this->rightWheelPin, rightWheelSpeed * multiplier);
+    move_at_velocity(this->leftWheelPin, 100 * multiplier);
+    move_at_velocity(this->rightWheelPin, 100 * multiplier);
 
     // 6. While loop
     while (std::abs(leftWheelPosition) <= std::abs(leftWheelTargetPos) && std::abs(rightWheelPosition) <= std::abs(rightWheelTargetPos) && condition)
@@ -235,6 +238,9 @@ void SmallRobot::rotateAndCorrect(int degrees, int ticksPerSecond, bool conditio
     9. If either motor's pos is beyond the target position, stop both motors, end method.
     */
 
+    cmpc(this->leftWheelPin);
+    cmpc(this->rightWheelPin);
+    
     // 1. Set up the multipliers
     int leftMultiplier = 1;
     int rightMultiplier = -1;
