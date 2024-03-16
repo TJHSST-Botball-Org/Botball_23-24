@@ -12,6 +12,10 @@ void Roomba::move(int distance, int speed)
     create_stop();
 }
 
-void Roomba::rotate(float angle)
+void Roomba::rotate(int angle, int speed)
 {
+    int factor = angle > 0 ? -1 : 1;
+    set_create_total_angle(0);
+    while (factor * get_create_total_angle() < angle)         // if turn right, get_create_total_angle() returns negative
+        create_drive_direct(-factor * speed, factor * speed); // if turn right, factor will be negative
 }
