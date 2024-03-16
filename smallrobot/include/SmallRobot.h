@@ -8,7 +8,7 @@ private:
     const int wheelDistance; // Distance between the wheels across the robot body; the length of the axle connecting the two wheels if there was an axle
     int leftWheelPin;
     int rightWheelPin;
-    float posPerOneCm;
+    float posPerOneInch;
 
 public:
     SmallRobot(int leftWheelPin, int rightWheelPin, int wheelDistance, int wheelRadius);

@@ -9,7 +9,7 @@ SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin, int wheelDistance, i
     this->wheelDistance = wheelDistance;
     this->wheelRadius = wheelRadius;
 
-    this->posPerOneCm = 1500 / (2.0 * 3.14159265358979323846 * this->wheelRadius);
+    this->posPerOneInch = 1500 / (2.0 * 3.14159265358979323846 * this->wheelRadius);
 }
 
 void SmallRobot::moveDistanceAndCorrect(int distance, int percentPower, bool condition)
