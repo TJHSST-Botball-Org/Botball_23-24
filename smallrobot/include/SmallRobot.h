@@ -13,8 +13,8 @@ private:
 public:
     SmallRobot(int leftWheelPin, int rightWheelPin, int wheelDistance, int wheelRadius);
 
-    void moveDistanceAndCorrect(int distance, int percentPower, bool condition = true); // Moves for some distance, blocking
-    void moveDistance(int distance, int percentPower, bool condition = true);           // Same as moveForwardDistanceAndCorrect, but does not correct
+    void moveDistanceAndCorrect(int distance, int ticksPerSecond, bool condition = true); // Moves for some distance, blocking
+    void moveDistance(int distance, int percentPower, bool condition = true);             // Same as moveForwardDistanceAndCorrect, but does not correct
 
     void moveContinuous(int percentPower); // Moves continously forward/backwards. percentPower -100 to 100
 
