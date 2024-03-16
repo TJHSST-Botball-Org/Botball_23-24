@@ -269,7 +269,7 @@ void SmallRobot::rotateAndCorrect(int degrees, int ticksPerSecond, bool conditio
     freeze(this->rightWheelPin);
 }
 
-void SmallRobot::rotate(int degrees, int percentPower)
+void SmallRobot::rotate(int degrees, int percentPower, bool condition)
 {
     // 1. Clear counters, change percentPower
     int leftPercentPower = percentPower;

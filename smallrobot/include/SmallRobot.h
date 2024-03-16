@@ -4,8 +4,8 @@
 class SmallRobot
 {
 private:
-    const int wheelRadius;   // Both are in inches
-    const int wheelDistance; // Distance between the wheels across the robot body; the length of the axle connecting the two wheels if there was an axle
+    int wheelRadius;   // Both are in inches
+    int wheelDistance; // Distance between the wheels across the robot body; the length of the axle connecting the two wheels if there was an axle
     int leftWheelPin;
     int rightWheelPin;
     float posPerOneInch;
