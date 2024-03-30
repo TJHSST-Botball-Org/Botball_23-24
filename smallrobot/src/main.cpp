@@ -6,7 +6,8 @@ int main()
 {
     SmallRobot robot(0, 1, 6.5, 1.375, 1900, 2000);
 
-    // Step 1: Purple
+    // Step 1: Purple (Altered)
+    /*
     robot.moveDistanceAndCorrect(16.0, 1000);
     robot.rotateAndCorrect(-285, 1000);
     
@@ -23,8 +24,23 @@ int main()
     robot.rotateAndCorrect(-45.0, 750);
     
     robot.moveDistanceAndCorrect(5.0, 1000);
+    */
+    // Step 1: True Purple
+    robot.moveDistanceAndCorrect(16.0, 1000);
+    robot.rotateAndCorrect(-285, 1000);
     
+    robot.moveDistanceAndCorrect(9.0, 1000);
+    robot.rotateAndCorrect(-125.0, 1000);
     
+    robot.moveDistanceAndCorrect(28.5, 1000);
+    robot.rotateAndCorrect(35.0, 750);
+    
+    robot.moveDistanceAndCorrect(25.0, 1000);
+	robot.rotateAndCorrect(-45.0, 750);
+    
+    robot.moveDistanceAndCorrect(6.5, 1000);
+
+
     
     //robot.rotateAndCorrect(90, 750);
     //robot.turnLeftContinuous(750);
