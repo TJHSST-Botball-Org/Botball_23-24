@@ -26,20 +26,48 @@ int main()
     robot.moveDistanceAndCorrect(5.0, 1000);
     */
     // Step 1: True Purple
-    robot.moveDistanceAndCorrect(16.0, 1000);
-    robot.rotateAndCorrect(-285, 1000);
+    robot.moveDistanceAndCorrect(6.75, 1000);
+    robot.rotateAndCorrect(-20,1000);
+    robot.moveDistanceAndCorrect(16.0,1000);
+    robot.rotateAndCorrect(-120,1000);
+    robot.moveDistanceAndCorrect(8.0,1000);
+    robot.rotateAndCorrect(-120,1000);
+    robot.moveDistanceAndCorrect(8.0,1000);
+    robot.rotateAndCorrect(-25,400);
+    robot.moveDistanceAndCorrect(14.0,400);
+
     
+    robot.rotateAndCorrect(-35.0, 400);
+    robot.moveDistanceAndCorrect(0.5,400);
+    robot.rotateAndCorrect(-35.0, 400);
+    robot.moveDistanceAndCorrect(0.5,400);
+    robot.rotateAndCorrect(-35.0, 400);
+    robot.moveDistanceAndCorrect(0.5,400);
+    robot.rotateAndCorrect(-30.0, 400);
+    robot.moveDistanceAndCorrect(19,1000);
+    robot.rotateAndCorrect(35.0, 400);
+    
+    robot.moveDistanceAndCorrect(35.0, 800);
+    robot.rotateAndCorrect(-35.0, 400);
+    robot.moveDistanceAndCorrect(0.5,400);
+    robot.rotateAndCorrect(-25.0, 400);
+    robot.moveDistanceAndCorrect(0.5,400);
+    
+    robot.moveDistanceAndCorrect(8, 1000);
+    
+    
+    /*
     robot.moveDistanceAndCorrect(9.0, 1000);
     robot.rotateAndCorrect(-125.0, 1000);
     
-    robot.moveDistanceAndCorrect(28.5, 1000);
+    robot.moveDistanceAndCorrect(22, 1000);
     robot.rotateAndCorrect(35.0, 750);
     
     robot.moveDistanceAndCorrect(25.0, 1000);
 	robot.rotateAndCorrect(-45.0, 750);
     
     robot.moveDistanceAndCorrect(6.5, 1000);
-
+	*/
 
     
     //robot.rotateAndCorrect(90, 750);
