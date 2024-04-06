@@ -5,7 +5,7 @@
 
 const float PI = 3.14159265358979323846;
 
-SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin, float wheelDistance, float wheelRadius, int leftTicksPerRevolution, int rightTicksPerRevolution, int leftLightPin, int rightLightPin)
+SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin, float wheelDistance, float wheelRadius, int leftTicksPerRevolution, int rightTicksPerRevolution, int leftLightPin, int rightLightPin, int clawServoPin, int armServoPin)
 {
     this->leftWheelPin = leftWheelPin;
     this->rightWheelPin = rightWheelPin;
@@ -19,6 +19,9 @@ SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin, float wheelDistance,
 
     this->leftPosPerOneInch = leftTicksPerRevolution / (2.0 * PI * this->wheelRadius);
     this->rightPosPerOneInch = rightTicksPerRevolution / (2.0 * PI * this->wheelRadius);
+
+    this->clawServoPin = clawServoPin;
+    this->armServoPin = armServoPin;
 
     cmpc(this->leftWheelPin);
     cmpc(this->rightWheelPin);
@@ -378,4 +381,48 @@ void SmallRobot::stop()
     /* Stops all turns and forward/backward movement */
     freeze(this->leftWheelPin);
     freeze(this->rightWheelPin);
+}
+
+void SmallRobot::openClaw()
+{
+    enable_servo(this->clawServoPin);
+    set_servo_position(this->clawServoPin, 500);
+    disable_servo(this->clawServoPin);
+}
+
+void SmallRobot::closeClaw()
+{
+    enable_servo(this->clawServoPin);
+    set_servo_position(this->clawServoPin, 0);
+    disable_servo(this->clawServoPin);
+}
+
+void SmallRobot::setArmPosition(int pos, int speed)
+{
+    enable_servo(this->armServoPin);
+
+    bool isGoingUp = pos > get_servo_position(this->armServoPin);
+
+    while (true)
+    {
+        if (isGoingUp && pos <= get_servo_position(this->armServoPin))
+            break;
+        if (!isGoingUp && pos >= get_servo_position(this->armServoPin))
+            break;
+
+        if (isGoingUp)
+        {
+            set_servo_position(this->armServoPin, get_servo_position(this->armServoPin) + speed)
+        }
+        else
+        {
+            set_servo_position(this->armServoPin, get_servo_position(this->armServoPin) - speed)
+        }
+
+        msleep(1);
+    }
+
+    set_servo_position(this->armServoPin, pos);
+
+    disable_servo(this->armServoPin);
 }
