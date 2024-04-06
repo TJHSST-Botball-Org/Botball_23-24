@@ -386,7 +386,7 @@ void SmallRobot::stop()
 void SmallRobot::openClaw()
 {
     enable_servo(this->clawServoPin);
-    set_servo_position(this->clawServoPin, 500);
+    set_servo_position(this->clawServoPin, 1400);
     disable_servo(this->clawServoPin);
 }
 
