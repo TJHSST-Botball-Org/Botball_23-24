@@ -418,6 +418,8 @@ void SmallRobot::setArmPosition(int pos, int speed)
         {
             set_servo_position(this->armServoPin, get_servo_position(this->armServoPin) - speed)
         }
+
+        msleep(1);
     }
 
     set_servo_position(this->armServoPin, pos);
