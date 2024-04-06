@@ -32,7 +32,8 @@ public:
     void turnLeftContinuous(int percentPower);  // Turns left continously. Percent power 0-100
     void turnRightContinuous(int percentPower); // Turns right continously. Percent power 0-100
 
-    void setClawPosition(int pos, int speed);
+    void openClaw();
+    void closeClaw();
     void setArmPosition(int pos, int speed);
 
     void grabBotguy();
