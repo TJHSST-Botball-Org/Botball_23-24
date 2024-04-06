@@ -36,8 +36,6 @@ public:
     void closeClaw();
     void setArmPosition(int pos, int speed); // 0-2047, 0 is fully up, 2047 is down. Speed is pos per milisecond, and is positive.
 
-    void grabBotguy();
-
     void stop(); // Stops all turns and forward/backward movement.
 
     // TODO: ADD SMALL ROBOT SPECIFIC FUNCTIONS LATER
