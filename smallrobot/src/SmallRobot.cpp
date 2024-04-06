@@ -386,15 +386,15 @@ void SmallRobot::stop()
 void SmallRobot::openClaw()
 {
     enable_servo(this->clawServoPin);
-    set_servo_position(this->clawServoPin, 1400);
-    disable_servo(this->clawServoPin);
+    set_servo_position(this->clawServoPin, 650);
+    msleep(500); // Gives some time for it to open
 }
 
 void SmallRobot::closeClaw()
 {
     enable_servo(this->clawServoPin);
     set_servo_position(this->clawServoPin, 0);
-    disable_servo(this->clawServoPin);
+    msleep(500); // Gives some time for it to close
 }
 
 void SmallRobot::setArmPosition(int pos, int speed)
@@ -402,6 +402,8 @@ void SmallRobot::setArmPosition(int pos, int speed)
     enable_servo(this->armServoPin);
 
     bool isGoingUp = pos > get_servo_position(this->armServoPin);
+
+    std::cout << isGoingUp << std::flush;
 
     while (true)
     {
@@ -412,17 +414,19 @@ void SmallRobot::setArmPosition(int pos, int speed)
 
         if (isGoingUp)
         {
-            set_servo_position(this->armServoPin, get_servo_position(this->armServoPin) + speed)
+            int directedPos = (get_servo_position(this->armServoPin) + speed) > 2047 ? 2047 : get_servo_position(this->armServoPin) + speed;
+            set_servo_position(this->armServoPin, directedPos);
         }
         else
         {
-            set_servo_position(this->armServoPin, get_servo_position(this->armServoPin) - speed)
+            int directedPos = get_servo_position(this->armServoPin) - speed < 0 ? 0 : get_servo_position(this->armServoPin) - speed;
+            set_servo_position(this->armServoPin, directedPos);
         }
 
-        msleep(1);
+        msleep(10);
     }
 
     set_servo_position(this->armServoPin, pos);
 
-    disable_servo(this->armServoPin);
+    msleep(100); // Gives some time for it to go to position
 }

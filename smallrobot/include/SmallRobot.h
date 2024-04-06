@@ -18,7 +18,7 @@ private:
     int armServoPin;
 
 public:
-    SmallRobot(int leftWheelPin, int rightWheelPin, float wheelDistance, float wheelRadius, int leftTicksPerRevolution, int rightTicksPerRevolution, int leftColorPin = -1, int rightColorPin = -1, int clawServoPin, int armServoPin);
+    SmallRobot(int leftWheelPin, int rightWheelPin, float wheelDistance, float wheelRadius, int leftTicksPerRevolution, int rightTicksPerRevolution, int leftColorPin, int rightColorPin, int clawServoPin, int armServoPin);
 
     void moveDistanceAndCorrect(float distance, int ticksPerSecond, bool condition = true); // Moves for some distance, blocking
     void moveDistance(float distance, int ticksPerSecond, bool condition = true);           // Same as moveForwardDistanceAndCorrect, but does not correct
