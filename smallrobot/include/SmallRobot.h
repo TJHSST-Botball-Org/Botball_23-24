@@ -34,7 +34,7 @@ public:
 
     void openClaw();
     void closeClaw();
-    void setArmPosition(int pos, int speed);
+    void setArmPosition(int pos, int speed); // 0-2047, 0 is fully up, 2047 is down. Speed is pos per milisecond, and is positive.
 
     void grabBotguy();
 
