@@ -1,4 +1,5 @@
 #include <kipr/wombat.h>
+// #include "../kipr/wombat.h"
 #include <Roomba.h>
 
 float Roomba::lerp(float value, float a1, float b1, float a2, float b2)
@@ -80,10 +81,8 @@ void Roomba::setSlidePos(float percentageTop, Roomba::SLIDE_SPEED speed = Roomba
 
     freeze(SLIDE_PIN);
 }
-set_sser
 
-    void
-    Roomba::setSlidePitch(float percentageUp)
+void Roomba::setSlidePitch(float percentageUp)
 {
     enable_servo(SLIDE_PITCH_PIN);
     set_servo_position(SLIDE_PITCH_PIN, lerp(percentageUp, 0.0, 1.0, SLIDE_PITCH_DOWN, SLIDE_PITCH_UP));
@@ -95,4 +94,9 @@ void Roomba::setClawPos(float percentageOpen)
     enable_servo(CLAW_PIN);
     set_servo_position(CLAW_PIN, lerp(percentageOpen, 0.0, 1.0, CLAW_CLOSED, CLAW_OPEN));
     msleep(CLAW_SLEEP);
+}
+
+bool Roomba::switchPressed()
+{
+    return get_digital_value() == 1;
 }

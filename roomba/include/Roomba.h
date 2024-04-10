@@ -25,20 +25,22 @@ public:
 private:
     static const int DISTANCE_TO_INCHES = 1;
 
+    static const int SLIDE_PIN = 0;         // motor
     static const int SLIDE_TOP = 150;       // ticks
     static const int SLIDE_BOTTOM = 0;      // ticks
     static const int SLOW_DOWN_BUFFER = 50; // distance away from targetPos you should start slowing down
-    static const int SLIDE_PIN = 1;
 
-    static const int SLIDE_PITCH_PIN = 2;
+    static const int SLIDE_PITCH_PIN = 0; // servo
     static const int SLIDE_PITCH_UP = 100;
     static const int SLIDE_PITCH_DOWN = 0;
     static const int SLIDE_PITCH_SLEEP = 500;
 
+    static const int CLAW_PIN = 1; // servo
     static const int CLAW_OPEN = 100;
     static const int CLAW_CLOSED = 0;
-    static const int CLAW_PIN = 3;
     static const int CLAW_SLEEP = 100; // this is essentially the speed
+
+    static const int SWITCH_PIN = 0; // digital
 
 private:
     int lastSlidePos = 0;
@@ -58,11 +60,10 @@ public:
     */
     void setSlidePos(float percentageTop, Roomba::SLIDE_SPEED speed = Roomba::SLIDE_SPEED::DEFAULT);
     void setSlidePitch(float percentageUp);
-
     /*
     precondition :
         - 0.0 <= percentageClosed <= 1.0
     */
-    void
-    setClawPos(float percentageOpen);
+    void setClawPos(float percentageOpen);
+    bool switchPressed();
 };
