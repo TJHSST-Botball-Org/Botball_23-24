@@ -11,8 +11,8 @@ private:
 public:
     Roomba_OpMode() : OpMode()
     {
+        // initilization
         this->robot = Roomba();
-        create_connect();
     }
 
     void runOpMode() override
