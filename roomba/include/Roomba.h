@@ -31,16 +31,18 @@ private:
     static const int SLOW_DOWN_BUFFER = 50; // distance away from targetPos you should start slowing down
 
     static const int SLIDE_PITCH_PIN = 0; // servo
-    static const int SLIDE_PITCH_UP = 100;
+    static const int SLIDE_PITCH_UP = 927;
     static const int SLIDE_PITCH_DOWN = 0;
     static const int SLIDE_PITCH_SLEEP = 500;
 
-    static const int CLAW_PIN = 1; // servo
-    static const int CLAW_OPEN = 100;
-    static const int CLAW_CLOSED = 0;
+    static const int CLAW_PIN = 2; // servo
+    static const int CLAW_OPEN = 1228;
+    static const int CLAW_CLOSED = 500;
     static const int CLAW_SLEEP = 100; // this is essentially the speed
 
-    static const int SWITCH_PIN = 0; // digital
+    static const int SWITCH_PIN = 0;    // digital
+    static const int TOP_SWITCH = 1;    // digital
+    static const int BOTTOM_SWITCH = 2; // digital
 
 private:
     int lastSlidePos = 0;
@@ -51,14 +53,14 @@ private:
 public:
     Roomba();
 
-    void move(int distance, Roomba::MOVEMENT_SPEED speed = Roomba::MOVEMENT_SPEED::DEFAULT); // forward and backwards
-    void rotate(int angle, Roomba::ROTATION_SPEED speed = Roomba::ROTATION_SPEED::DEFAULT);  // right and left
+    void move(int distance, MOVEMENT_SPEED speed_enum = MOVEMENT_SPEED::DEFAULT); // forward and backwards
+    void rotate(int angle, ROTATION_SPEED speed_enum = ROTATION_SPEED::DEFAULT);  // right and left
 
     /*
     precondition :
         - 0.0 <= percentageUp <= 1.0
     */
-    void setSlidePos(float percentageTop, Roomba::SLIDE_SPEED speed = Roomba::SLIDE_SPEED::DEFAULT);
+    void setSlidePos(float percentageTop, SLIDE_SPEED speed_enum = SLIDE_SPEED::DEFAULT);
     void setSlidePitch(float percentageUp);
     /*
     precondition :

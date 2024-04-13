@@ -3,5 +3,5 @@
 class OpMode
 {
 public:
-    virtual void runOpMode();
+    virtual void runOpMode() = 0;
 };

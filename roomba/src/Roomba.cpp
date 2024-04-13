@@ -2,6 +2,12 @@
 // #include "../kipr/wombat.h"
 #include <Roomba.h>
 
+Roomba::Roomba()
+{
+    create_connect();
+    cmpc(SLIDE_PIN);
+}
+
 float Roomba::lerp(float value, float a1, float b1, float a2, float b2)
 {
     // First, find the normalized position of 'value' within the range [a1, b1]
@@ -11,16 +17,11 @@ float Roomba::lerp(float value, float a1, float b1, float a2, float b2)
     return a2 + t * (b2 - a2);
 }
 
-Roomba::Roomba()
-{
-    create_connect();
-    cmpc(SLIDE_PIN);
-}
-
-void Roomba::move(int distance, int speed)
+void Roomba::move(int distance, MOVEMENT_SPEED speed_enum)
 {
     distance = distance * Roomba::DISTANCE_TO_INCHES; // scales the ticks to inches
     int factor = distance > 0 ? -1 : 1;
+    int speed = static_cast<int>(speed_enum);
     set_create_distance(0);
 
     while (factor * get_create_distance() < distance)          // if forward, get_create_distance() returns negative
@@ -29,19 +30,21 @@ void Roomba::move(int distance, int speed)
     create_stop();
 }
 
-void Roomba::rotate(int angle, int speed)
+void Roomba::rotate(int angle, ROTATION_SPEED speed_enum)
 {
     int factor = angle > 0 ? -1 : 1;
     set_create_total_angle(0);
+    int speed = static_cast<int>(speed_enum);
     while (factor * get_create_total_angle() < angle)         // if turn right, get_create_total_angle() returns negative
         create_drive_direct(-factor * speed, factor * speed); // if turn right, factor will be negative
 }
 
-void Roomba::setSlidePos(float percentageTop, Roomba::SLIDE_SPEED speed = Roomba::SLIDE_SPEED::DEFAULT)
+void Roomba::setSlidePos(float percentageTop, SLIDE_SPEED speed_enum)
 {
     // I don't plan on clearing motor position to let gmpc give accurate value
     int currentPos = gmpc(SLIDE_PIN);
     float targetPos = (int)lerp(percentageTop, 0.0, 1.0, SLIDE_BOTTOM, SLIDE_TOP);
+    int speed = static_cast<int>(speed_enum);
     int currentSpeed = speed;
 
     while (currentPos != targetPos)
@@ -76,7 +79,7 @@ void Roomba::setSlidePos(float percentageTop, Roomba::SLIDE_SPEED speed = Roomba
                 currentSpeed = -speed;
             }
         }
-        move_at_velocity(currentSpeed);
+        move_at_velocity(SLIDE_PIN, currentSpeed);
     }
 
     freeze(SLIDE_PIN);
@@ -98,5 +101,5 @@ void Roomba::setClawPos(float percentageOpen)
 
 bool Roomba::switchPressed()
 {
-    return get_digital_value() == 1;
+    return get_digital_value(SWITCH_PIN) == 1;
 }

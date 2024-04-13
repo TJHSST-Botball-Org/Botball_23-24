@@ -17,7 +17,7 @@ public:
 
     void runOpMode() override
     {
-        robot.move(50);
+        robot.move(10, Roomba::MOVEMENT_SPEED::DEFAULT);
     }
 };
 
