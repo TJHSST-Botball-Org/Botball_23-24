@@ -34,6 +34,7 @@ public:
 
     void openClaw();
     void closeClaw();
+    void restClaw();
     void setArmPosition(int pos, int speed); // 0-2047, 0 is fully up, 2047 is down. Speed is pos per milisecond, and is positive.
 
     void stop(); // Stops all turns and forward/backward movement.

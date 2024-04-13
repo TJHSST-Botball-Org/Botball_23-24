@@ -386,14 +386,21 @@ void SmallRobot::stop()
 void SmallRobot::openClaw()
 {
     enable_servo(this->clawServoPin);
-    set_servo_position(this->clawServoPin, 650);
+    set_servo_position(this->clawServoPin, 1000);
     msleep(500); // Gives some time for it to open
 }
 
 void SmallRobot::closeClaw()
 {
     enable_servo(this->clawServoPin);
-    set_servo_position(this->clawServoPin, 0);
+    set_servo_position(this->clawServoPin, 2047);
+    msleep(500); // Gives some time for it to close
+}
+
+void SmallRobot::restClaw()
+{
+    enable_servo(this->clawServoPin);
+    set_servo_position(this->clawServoPin, 1700);
     msleep(500); // Gives some time for it to close
 }
 
