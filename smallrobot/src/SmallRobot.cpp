@@ -200,8 +200,10 @@ void SmallRobot::moveUntilEitherColorDetect(int speed)
     cmpc(this->leftWheelPin);
     cmpc(this->rightWheelPin);
 
-    while (analog(leftLightPin) < this->leftThreshold || analog(rightLightPin) < this->rightThreshold)
+    while (rightColor() && leftColor())
     {
+        std::cout << analog(this->leftLightPin) << " " << analog(this->rightLightPin) << "\n"
+                  << std::flush;
         move_at_velocity(this->leftWheelPin, speed);
         move_at_velocity(this->rightWheelPin, speed);
     }
@@ -430,12 +432,12 @@ void SmallRobot::setArmPosition(int pos, int speed)
     msleep(100); // Gives some time for it to go to position
 }
 
-boolean leftColor()
+bool SmallRobot::leftColor()
 {
     return analog(this->leftLightPin) < this->leftThreshold;
 }
 
-boolean rightColor()
+bool SmallRobot::rightColor()
 {
     return analog(this->rightLightPin) < this->rightThreshold;
 }

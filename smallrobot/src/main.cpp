@@ -4,7 +4,7 @@
 
 int main()
 {
-    SmallRobot robot(0, 1, 6.5, 1.375, 1900, 2000, -1, -1, 1, 0, 3200, 3200);
+    SmallRobot robot(0, 1, 6.5, 1.375, 1900, 2000, 0, 1, 1, 0, 3200, 3200);
 
     // Move it out of the starting box
     robot.moveDistanceAndCorrect(-20.0, 1300);
@@ -87,13 +87,22 @@ int main()
     robot.rotateAndCorrect(25.0, 450);
     // Go forward a little
     robot.moveDistanceAndCorrect(1.5, 400);
+
     // Turn right to align with black line
-    robot.rotateAndCorrect(35.0, 450);
-    std::cout << "88\n"
+    std::cout << "92\n"
               << std::flush;
+    robot.moveUntilEitherColorDetect(400);
+    std::cout << "95\n"
+              << std::flush;
+    robot.turnRightWithColorSensor(400);
+
+    // robot.rotateAndCorrect(35.0, 450);
+    // std::cout << "88\n"
+    //           << std::flush;
+
     // Go forward and collect 3rd rock and 3 orange pom poms
     // This part moves towards the scrapyard
-    robot.moveDistanceAndCorrect(39, 1300);
+    robot.moveDistanceAndCorrect(35, 1300);
     std::cout << "91\n"
               << std::flush;
     // Turn left to move everything into scrapyard

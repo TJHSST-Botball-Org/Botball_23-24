@@ -19,8 +19,8 @@ private:
     int leftThreshold;
     int rightThreshold;
 
-    boolean leftColor();
-    boolean rightColor();
+    bool leftColor();
+    bool rightColor();
 
 public:
     SmallRobot(int leftWheelPin, int rightWheelPin, float wheelDistance, float wheelRadius, int leftTicksPerRevolution, int rightTicksPerRevolution, int leftColorPin, int rightColorPin, int clawServoPin, int armServoPin, int leftThreshold, int rightThreshold);
@@ -43,6 +43,8 @@ public:
     void setArmPosition(int pos, int speed); // 0-2047, 0 is fully up, 2047 is down. Speed is pos per milisecond, and is positive.
 
     void stop(); // Stops all turns and forward/backward movement.
+
+    void turnRightWithColorSensor(int speed);
 
     // TODO: ADD SMALL ROBOT SPECIFIC FUNCTIONS LATER
 };
