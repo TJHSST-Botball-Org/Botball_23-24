@@ -44,6 +44,7 @@ public:
 
     void stop(); // Stops all turns and forward/backward movement.
 
+    void turnLeftWithColorSensor(int speed);
     void turnRightWithColorSensor(int speed);
 
     // TODO: ADD SMALL ROBOT SPECIFIC FUNCTIONS LATER

@@ -382,7 +382,7 @@ void SmallRobot::stop()
 void SmallRobot::openClaw()
 {
     enable_servo(this->clawServoPin);
-    set_servo_position(this->clawServoPin, 1000);
+    set_servo_position(this->clawServoPin, 1138);
     msleep(500); // Gives some time for it to open
 }
 
@@ -440,6 +440,35 @@ bool SmallRobot::leftColor()
 bool SmallRobot::rightColor()
 {
     return analog(this->rightLightPin) < this->rightThreshold;
+}
+
+void SmallRobot::turnLeftWithColorSensor(int speed)
+{
+    while (!leftColor() || !rightColor())
+    {
+        if (leftColor() && rightColor())
+        {
+            move_at_velocity(this->leftWheelPin, speed);
+            move_at_velocity(this->rightWheelPin, speed);
+        }
+        else if (!leftColor() && rightColor())
+        {
+            move_at_velocity(this->leftWheelPin, 0);
+            move_at_velocity(this->rightWheelPin, speed);
+        }
+        else if (leftColor() && !rightColor())
+        {
+            std::cout << "Unexpected";
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    freeze(this->leftWheelPin);
+    freeze(this->rightWheelPin);
 }
 
 void SmallRobot::turnRightWithColorSensor(int speed)

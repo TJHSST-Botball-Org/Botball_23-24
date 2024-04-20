@@ -130,6 +130,15 @@ int main()
 
     // Speed up the code next
 
+    robot.rotateAndCorrect(-20, 400);
+    robot.moveDistanceAndCorrect(15, 400);
+
+    robot.moveUntilEitherColorDetect(400);
+    robot.turnLeftWithColorSensor(100);
+    robot.moveDistanceAndCorrect(-5, 400);
+    robot.moveUntilEitherColorDetect(400);
+    robot.turnLeftWithColorSensor(400);
+
     disable_servos();
 
     return 0;
