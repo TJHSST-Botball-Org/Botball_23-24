@@ -11,7 +11,7 @@ int main()
 
     // Move the claw up
     robot.openClaw();
-    robot.setArmPosition(0, 6);
+    robot.setArmPosition(0, 20);
 
     // Rotate towards the moonbase
     robot.rotateAndCorrect(-56, 400);
@@ -66,41 +66,48 @@ int main()
 
     // Go forward
     robot.moveDistanceAndCorrect(5, 800);
-
+    std::cout << "69\n"
+              << std::flush;
     // Lower Arm to lower cube to lower center of gravity to lower shakyness
-    robot.setArmPosition(1000, 3);
-
+    robot.setArmPosition(1000, 20);
+    std::cout << "72\n"
+              << std::flush;
     // move forward
     robot.moveDistanceAndCorrect(4, 800);
-
+    std::cout << "75\n"
+              << std::flush;
     // Do a slow turn right to keep the pom poms
-
+    std::cout << "77\n"
+              << std::flush;
     // Do a small turn right
     robot.rotateAndCorrect(20.0, 450);
     // Go forward a little
-    robot.moveDistanceAndCorrect(1.5, 200);
+    robot.moveDistanceAndCorrect(1.5, 400);
     // Do a small turn right
     robot.rotateAndCorrect(25.0, 450);
     // Go forward a little
-    robot.moveDistanceAndCorrect(1.5, 200);
+    robot.moveDistanceAndCorrect(1.5, 400);
     // Turn right to align with black line
-    robot.rotateAndCorrect(40.0, 450);
-
+    robot.rotateAndCorrect(35.0, 450);
+    std::cout << "88\n"
+              << std::flush;
     // Go forward and collect 3rd rock and 3 orange pom poms
     // This part moves towards the scrapyard
-    robot.moveDistanceAndCorrect(39, 800);
-
+    robot.moveDistanceAndCorrect(39, 1500);
+    std::cout << "91\n"
+              << std::flush;
     // Turn left to move everything into scrapyard
     robot.rotateAndCorrect(-50.0, 650);
-
+    std::cout << "94\n"
+              << std::flush;
     // Go forward and place everything in scrapyard
     robot.moveDistanceAndCorrect(7, 800);
 
     // Go backward out of scrapyard to release everything in the scrapyard
     robot.moveDistanceAndCorrect(-9, 800);
 
-    // Do a 180 degree turn to get into position to drop the yellow cube in the scrapyard
-    robot.rotateAndCorrect(-210.0, 650);
+    // Do a 210 degree turn to get into position to drop the yellow cube in the scrapyard
+    robot.rotateAndCorrect(-240.0, 650);
 
     // Move back a little to avoid dropping the cube on the rocks and stuff
     robot.moveDistanceAndCorrect(-2, 800);
