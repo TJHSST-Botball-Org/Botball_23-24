@@ -14,7 +14,7 @@ int main()
     robot.setArmPosition(0, 20);
 
     // Rotate towards the moonbase
-    robot.rotateAndCorrect(-56, 400);
+    robot.rotateAndCorrect(-60, 400);
 
     // Move towards the moonbase
     robot.moveDistanceAndCorrect(-12.75, 750);
