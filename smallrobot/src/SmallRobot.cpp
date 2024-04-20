@@ -268,18 +268,8 @@ void SmallRobot::rotateAndCorrect(int degrees, int ticksPerSecond, bool conditio
     move_at_velocity(this->leftWheelPin, leftWheelSpeed * leftMultiplier);
     move_at_velocity(this->rightWheelPin, rightWheelSpeed * rightMultiplier);
 
-    std::cout << "\n"
-              << leftWheelPosition << " " << leftWheelTargetPos << "\n"
-              << std::flush;
-    std::cout << "\n"
-              << rightWheelPosition << " " << rightWheelTargetPos << "\n"
-              << std::flush;
-
     // 6. While loop
     bool loopCondition = true;
-
-    std::cout << loopCondition << "\n"
-              << std::flush;
 
     while (loopCondition)
     {
@@ -409,8 +399,6 @@ void SmallRobot::setArmPosition(int pos, int speed)
     enable_servo(this->armServoPin);
 
     bool isGoingUp = pos > get_servo_position(this->armServoPin);
-
-    std::cout << isGoingUp << std::flush;
 
     while (true)
     {
