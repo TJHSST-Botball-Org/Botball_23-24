@@ -5,7 +5,7 @@
 
 const float PI = 3.14159265358979323846;
 
-SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin, float wheelDistance, float wheelRadius, int leftTicksPerRevolution, int rightTicksPerRevolution, int leftLightPin, int rightLightPin, int clawServoPin, int armServoPin)
+SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin, float wheelDistance, float wheelRadius, int leftTicksPerRevolution, int rightTicksPerRevolution, int leftLightPin, int rightLightPin, int clawServoPin, int armServoPin, int leftThreshold, int rightThreshold)
 {
     this->leftWheelPin = leftWheelPin;
     this->rightWheelPin = rightWheelPin;
@@ -22,6 +22,9 @@ SmallRobot::SmallRobot(int leftWheelPin, int rightWheelPin, float wheelDistance,
 
     this->clawServoPin = clawServoPin;
     this->armServoPin = armServoPin;
+
+    this->leftThreshold = leftThreshold;
+    this->rightThreshold = rightThreshold;
 
     cmpc(this->leftWheelPin);
     cmpc(this->rightWheelPin);
@@ -192,19 +195,20 @@ void SmallRobot::moveDistance(float distance, int ticksPerSecond, bool condition
     freeze(this->rightWheelPin);
 }
 
-// void SmallRobot::moveUntilBlackLine(int percentPower){
+void SmallRobot::moveUntilEitherColorDetect(int speed)
+{
+    cmpc(this->leftWheelPin);
+    cmpc(this->rightWheelPin);
 
-//     cmpc(this->leftWheelPin);
-//     cmpc(this->rightWheelPin);
+    while (analog(leftLightPin) < this->leftThreshold || analog(rightLightPin) < this->rightThreshold)
+    {
+        move_at_velocity(this->leftWheelPin, speed);
+        move_at_velocity(this->rightWheelPin, speed);
+    }
 
-//     motor_power(this->leftWheelPin, percentPower);
-//     motor_power(this->rightWheelPin, percentPower);
-//     while(analog(leftLightPin)<blackLineThreshold and analog(leftLightPin)<blackLineThreshold){
-
-//     }
-//     freeze(this->leftWheelPin);
-//     freeze(this->rightWheelPin);
-// }
+    freeze(this->leftWheelPin);
+    freeze(this->rightWheelPin);
+}
 void SmallRobot::rotateAndCorrect(int degrees, int ticksPerSecond, bool condition)
 
 {
@@ -424,4 +428,43 @@ void SmallRobot::setArmPosition(int pos, int speed)
     set_servo_position(this->armServoPin, pos);
 
     msleep(100); // Gives some time for it to go to position
+}
+
+boolean leftColor()
+{
+    return analog(this->leftLightPin) < this->leftThreshold;
+}
+
+boolean rightColor()
+{
+    return analog(this->rightLightPin) < this->rightThreshold;
+}
+
+void SmallRobot::turnRightWithColorSensor(int speed)
+{
+    while (!leftColor() || !rightColor())
+    {
+        if (leftColor() && rightColor())
+        {
+            move_at_velocity(this->leftWheelPin, speed);
+            move_at_velocity(this->rightWheelPin, speed);
+        }
+        else if (leftColor() && !rightColor())
+        {
+            move_at_velocity(this->leftWheelPin, speed);
+            move_at_velocity(this->rightWheelPin, 0);
+        }
+        else if (!leftColor() && rightColor())
+        {
+            std::cout << "This is turnRightWithColorSensor, the left sensor is somehow ahead of the right. Stopping function right now, as this is unexpected behavior. For future reference: Would recommend running turnLeftWithColorSensor if you want this to be expected behavior";
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    freeze(this->leftWheelPin);
+    freeze(this->rightWheelPin);
 }
