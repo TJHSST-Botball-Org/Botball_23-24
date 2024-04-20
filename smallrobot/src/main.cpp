@@ -4,7 +4,7 @@
 
 int main()
 {
-    SmallRobot robot(0, 1, 6.5, 1.375, 1900, 2000, -1, -1, 1, 0);
+    SmallRobot robot(0, 1, 6.5, 1.375, 1900, 2000, -1, -1, 1, 0, 3200, 3200);
 
     // Move it out of the starting box
     robot.moveDistanceAndCorrect(-20.0, 1300);
@@ -93,7 +93,7 @@ int main()
               << std::flush;
     // Go forward and collect 3rd rock and 3 orange pom poms
     // This part moves towards the scrapyard
-    robot.moveDistanceAndCorrect(39, 1500);
+    robot.moveDistanceAndCorrect(39, 1300);
     std::cout << "91\n"
               << std::flush;
     // Turn left to move everything into scrapyard
