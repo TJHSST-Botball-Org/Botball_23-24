@@ -87,6 +87,7 @@ int main()
     robot.rotateAndCorrect(40.0, 450);
 
     // Go forward and collect 3rd rock and 3 orange pom poms
+    // This part moves towards the scrapyard
     robot.moveDistanceAndCorrect(39, 800);
 
     // Turn left to move everything into scrapyard
