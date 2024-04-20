@@ -1,11 +1,11 @@
 #include <kipr/wombat.h>
 // #include "../kipr/wombat.h"
 #include <Roomba.h>
+#include <iostream>
 
 Roomba::Roomba()
 {
     create_connect();
-    cmpc(SLIDE_PIN);
 }
 
 float Roomba::lerp(float value, float a1, float b1, float a2, float b2)
@@ -16,90 +16,132 @@ float Roomba::lerp(float value, float a1, float b1, float a2, float b2)
     // Then, map this normalized position (t) to the new range [a2, b2]
     return a2 + t * (b2 - a2);
 }
-
-void Roomba::move(int distance, MOVEMENT_SPEED speed_enum)
+float Roomba::scale(float value, float a1, float b1, float a2, float b2)
 {
-    distance = distance * Roomba::DISTANCE_TO_INCHES; // scales the ticks to inches
-    int factor = distance > 0 ? -1 : 1;
-    int speed = static_cast<int>(speed_enum);
-    set_create_distance(0);
+    return value * (b2 - a2) / (b1 - a1);
+}
 
-    while (factor * get_create_distance() < distance)          // if forward, get_create_distance() returns negative
-        create_drive_direct(-factor * speed, -factor * speed); // if forward, factor will be negative meaning we need to minus
+bool Roomba::topPressed()
+{
+    return get_digital_value(TOP_SWITCH) == 1;
+}
+bool Roomba::bottomPressed()
+{
+    std::cout << get_digital_output(BOTTOM_SWITCH) << std::endl;
+    return get_digital_value(BOTTOM_SWITCH) == 1;
+}
+
+void Roomba::move(int distance, int speed)
+{
+    distance = -distance;                             // front of the roomba is the back so that is why reverse
+    distance = distance * Roomba::DISTANCE_TO_INCHES; // scales the ticks to inches
+
+    set_create_distance(0);
+    if (distance > 0)
+    {
+        while (-get_create_distance() < distance)
+            create_drive_direct(speed, speed);
+    }
+    else
+    {
+        while (get_create_distance() < -distance)
+            create_drive_direct(-speed, -speed);
+    }
 
     create_stop();
 }
 
-void Roomba::rotate(int angle, ROTATION_SPEED speed_enum)
+void Roomba::rotate(int angle, int speed)
 {
-    int factor = angle > 0 ? -1 : 1;
+    angle = (int)(angle * ANGLE_TO_TICKS);
     set_create_total_angle(0);
-    int speed = static_cast<int>(speed_enum);
-    while (factor * get_create_total_angle() < angle)         // if turn right, get_create_total_angle() returns negative
-        create_drive_direct(-factor * speed, factor * speed); // if turn right, factor will be negative
+
+    if (angle > 0)
+        while (-get_create_total_angle() < angle)
+            create_drive_direct(speed, -speed);
+    else
+        while (get_create_total_angle() < -angle)
+            create_drive_direct(-speed, speed);
 }
 
-void Roomba::setSlidePos(float percentageTop, SLIDE_SPEED speed_enum)
+void Roomba::setSlidePos(float percentageTop, bool startingAtTop, int speed)
 {
-    // I don't plan on clearing motor position to let gmpc give accurate value
-    int currentPos = gmpc(SLIDE_PIN);
-    float targetPos = (int)lerp(percentageTop, 0.0, 1.0, SLIDE_BOTTOM, SLIDE_TOP);
-    int speed = static_cast<int>(speed_enum);
-    int currentSpeed = speed;
+    /*
+    Notes :
+    - If you go down, ticks from motor DECREASES
+    - If you go up, ticks from motor INCREASES
+    */
 
-    while (currentPos != targetPos)
+    // plan : go from top -> targetPosition / percentageTop
+
+    cmpc(SLIDE_PIN);
+    // rewrite
+    if (startingAtTop)
     {
-        /* code */
-        currentPos = gmpc(SLIDE_BOTTOM);
+        int deltaTicks = (int)scale(percentageTop - 1.0, 0.0, 1.0, SLIDE_BOTTOM, SLIDE_TOP); // moving down (aka. deltaTicks < 0)
 
-        if (currentPos == targetPos)
-        {
-            currentSpeed = 0;
-            continue;
-        }
-        else if (currentPos < targetPos) // slide is below target
-        {
-            if (targetPos - SLOW_DOWN_BUFFER <= currentPos)
-            {
-                currentSpeed = (int)lerp(currentPos, targetPos - SLOW_DOWN_BUFFER, targetPos, speed, 1.0);
-            }
-            else
-            {
-                currentSpeed = speed;
-            }
-        }
-        else
-        { // slide is above target
-            if (currentPos <= targetPos + SLOW_DOWN_BUFFER)
-            {
-                currentSpeed = (int)lerp(currentPos, targetPos, targetPos + SLOW_DOWN_BUFFER, -1, -speed);
-            }
-            else
-            {
-                currentSpeed = -speed;
-            }
-        }
-        move_at_velocity(SLIDE_PIN, currentSpeed);
+        while (-gmpc(SLIDE_PIN) > deltaTicks)
+            move_at_velocity(SLIDE_PIN, -speed);
+    }
+    else
+    {
+        int deltaTicks = (int)scale(percentageTop, 0.0, 1.0, SLIDE_BOTTOM, SLIDE_TOP); // moving up (aka. deltaTick > 0)
+        while (gmpc(SLIDE_PIN) < deltaTicks)
+            move_at_velocity(SLIDE_PIN, speed);
     }
 
     freeze(SLIDE_PIN);
 }
 
-void Roomba::setSlidePitch(float percentageUp)
+void Roomba::setSlidePitch(float percentageVertical)
 {
     enable_servo(SLIDE_PITCH_PIN);
-    set_servo_position(SLIDE_PITCH_PIN, lerp(percentageUp, 0.0, 1.0, SLIDE_PITCH_DOWN, SLIDE_PITCH_UP));
+    set_servo_position(SLIDE_PITCH_PIN, lerp(percentageVertical, 0.0f, 1.0f, SLIDE_PITCH_HORIZONTAL, SLIDE_PITCH_VERTICAL));
     msleep(SLIDE_PITCH_SLEEP);
 }
 
 void Roomba::setClawPos(float percentageOpen)
 {
     enable_servo(CLAW_PIN);
-    set_servo_position(CLAW_PIN, lerp(percentageOpen, 0.0, 1.0, CLAW_CLOSED, CLAW_OPEN));
+    set_servo_position(CLAW_PIN, lerp(percentageOpen, 0.0f, 1.0f, CLAW_CLOSED, CLAW_OPEN));
     msleep(CLAW_SLEEP);
 }
-
-bool Roomba::switchPressed()
+void Roomba::closeClaw()
 {
-    return get_digital_value(SWITCH_PIN) == 1;
+    setClawPos(0.0f);
+}
+void Roomba::openClaw()
+{
+    setClawPos(1.0f);
+}
+
+void Roomba::getNoodle(float percentageUp, int speed)
+{
+    if (percentageUp < 0.5)
+    { // use bottom switch for reference
+        while (!bottomPressed())
+            move_at_velocity(SLIDE_PIN, -speed);
+        msleep(SLIDE_SLEEP);
+        setSlidePos(percentageUp, false, speed);
+    }
+    else
+    { // use top switch for reference
+        while (!topPressed())
+            move_at_velocity(SLIDE_PIN, speed);
+        msleep(SLIDE_SLEEP);
+        setSlidePos(percentageUp, true, speed);
+    }
+    closeClaw();
+
+    // once you got the noodle, go to the top
+    while (!topPressed())
+        move_at_velocity(SLIDE_PIN, speed);
+}
+
+void Roomba::dropOffNoodle(float percentageUp, int speed)
+{
+    setSlidePos(percentageUp, true, speed);
+    msleep(SLIDE_SLEEP);
+    openClaw();
+    msleep(CLAW_SLEEP);
 }
