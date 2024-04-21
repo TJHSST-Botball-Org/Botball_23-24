@@ -34,6 +34,25 @@ int main()
     // Turn Right
     robot.rotateAndCorrect(20.0, 750);
 
+    while (true)
+    {
+        if (robot.leftColor())
+        {
+            robot.moveContinuous(600);
+        }
+        else
+        {
+            robot.turnLeftContinuous(600);
+        }
+    }
+
+    //
+    //
+    //
+    //
+    /*
+
+
     // Go Forward
     robot.moveDistanceAndCorrect(10, 800);
 
@@ -143,6 +162,13 @@ int main()
     robot.moveDistanceAndCorrect(10, 800);
     robot.rotateAndCorrect(45, 400);
     robot.moveUntilEitherColorDetect(800);
+
+*/
+    //
+    //
+    //
+    //
+    //
 
     disable_servos();
 
