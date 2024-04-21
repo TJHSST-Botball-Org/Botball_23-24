@@ -34,33 +34,9 @@ int main()
     // Turn Right
     robot.rotateAndCorrect(20.0, 750);
 
-    bool wasOnBlackLine = false;
+    robot.moveDistanceAndCorrect(10, 800);
 
-    while (true)
-    {
-        if (robot.rightColor())
-        {
-            if (wasOnBlackLine)
-            {
-                std::cout << "Was on black line\n"
-                          << std::flush;
-                robot.rotateAndCorrect(-5, 800);
-                wasOnBlackLine = false;
-                return 0;
-            }
-            robot.moveContinuous(800);
-        }
-        else
-        {
-            wasOnBlackLine = true;
-            robot.turnLeftContinuous(800);
-        }
-    }
-
-    wasOnBlackLine = false;
-    while (robot.leftColor())
-    {
-    }
+    robot.rotateAndCorrect(-45.0, 750);
 
     //
     //
