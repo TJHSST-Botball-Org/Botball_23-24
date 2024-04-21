@@ -42,8 +42,11 @@ int main()
         {
             if (wasOnBlackLine)
             {
+                std::cout << "Was on black line\n"
+                          << std::flush;
                 robot.rotateAndCorrect(-5, 800);
                 wasOnBlackLine = false;
+                return 0;
             }
             robot.moveContinuous(800);
         }
@@ -54,18 +57,16 @@ int main()
         }
     }
 
+    wasOnBlackLine = false;
+    while (robot.leftColor())
+    {
+    }
+
     //
     //
     //
     //
     /*
-
-
-    // Go Forward
-    robot.moveDistanceAndCorrect(10, 800);
-
-    // Face away from the moonbase, get the rock
-    robot.rotateAndCorrect(-45.0, 750);
 
     // GO forward and collect first rock in plow
     robot.moveDistanceAndCorrect(5, 800);
