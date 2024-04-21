@@ -34,11 +34,15 @@ int main()
     // Turn Right
     robot.rotateAndCorrect(20.0, 750);
 
-    // Go Forward
     robot.moveDistanceAndCorrect(10, 800);
 
-    // Face away from the moonbase, get the rock
     robot.rotateAndCorrect(-45.0, 750);
+
+    //
+    //
+    //
+    //
+    /*
 
     // GO forward and collect first rock in plow
     robot.moveDistanceAndCorrect(5, 800);
@@ -143,6 +147,13 @@ int main()
     robot.moveDistanceAndCorrect(10, 800);
     robot.rotateAndCorrect(45, 400);
     robot.moveUntilEitherColorDetect(800);
+
+*/
+    //
+    //
+    //
+    //
+    //
 
     disable_servos();
 

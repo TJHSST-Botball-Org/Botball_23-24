@@ -360,16 +360,16 @@ void SmallRobot::rotate(int degrees, int percentPower, bool condition)
     freeze(this->rightWheelPin);
 }
 
-void SmallRobot::turnLeftContinuous(int percentPower)
+void SmallRobot::turnLeftContinuous(int ticksPerSecond)
 {
-    motor_power(this->leftWheelPin, -1 * percentPower);
-    motor_power(this->rightWheelPin, percentPower);
+    move_at_velocity(this->leftWheelPin, -1 * ticksPerSecond);
+    move_at_velocity(this->rightWheelPin, ticksPerSecond);
 }
 
-void SmallRobot::turnRightContinuous(int percentPower)
+void SmallRobot::turnRightContinuous(int ticksPerSecond)
 {
-    motor_power(this->leftWheelPin, percentPower);
-    motor_power(this->rightWheelPin, -1 * percentPower);
+    move_at_velocity(this->leftWheelPin, ticksPerSecond);
+    move_at_velocity(this->rightWheelPin, -1 * ticksPerSecond);
 }
 
 void SmallRobot::stop()
@@ -377,6 +377,9 @@ void SmallRobot::stop()
     /* Stops all turns and forward/backward movement */
     freeze(this->leftWheelPin);
     freeze(this->rightWheelPin);
+
+    cmpc(this->leftWheelPin);
+    cmpc(this->rightWheelPin);
 }
 
 void SmallRobot::openClaw()
@@ -398,6 +401,15 @@ void SmallRobot::restClaw()
     enable_servo(this->clawServoPin);
     set_servo_position(this->clawServoPin, 1700);
     msleep(500); // Gives some time for it to close
+}
+
+void SmallRobot::moveContinuous(int ticksPerSecond)
+{
+    cmpc(this->leftWheelPin);
+    cmpc(this->rightWheelPin);
+
+    move_at_velocity(this->leftWheelPin, ticksPerSecond);
+    move_at_velocity(this->rightWheelPin, ticksPerSecond);
 }
 
 void SmallRobot::setArmPosition(int pos, int speed)
