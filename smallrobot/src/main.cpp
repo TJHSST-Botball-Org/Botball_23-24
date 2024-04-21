@@ -133,11 +133,16 @@ int main()
     robot.rotateAndCorrect(-20, 400);
     robot.moveDistanceAndCorrect(15, 400);
 
-    robot.moveUntilEitherColorDetect(400);
+    robot.moveUntilEitherColorDetect(800);
     robot.turnLeftWithColorSensor(100);
-    robot.moveDistanceAndCorrect(-5, 400);
+    robot.moveDistanceAndCorrect(-2, 400);
     robot.moveUntilEitherColorDetect(400);
     robot.turnLeftWithColorSensor(400);
+    robot.rotateAndCorrect(45, 400);
+
+    robot.moveDistanceAndCorrect(10, 800);
+    robot.rotateAndCorrect(45, 400);
+    robot.moveUntilEitherColorDetect(800);
 
     disable_servos();
 
