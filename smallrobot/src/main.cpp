@@ -130,7 +130,7 @@ int main()
 
     // Speed up the code next
 
-    robot.rotateAndCorrect(-20, 400);
+    robot.rotateAndCorrect(-30, 400);
     robot.moveDistanceAndCorrect(15, 400);
 
     robot.moveUntilEitherColorDetect(800);
