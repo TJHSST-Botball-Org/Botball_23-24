@@ -34,15 +34,23 @@ int main()
     // Turn Right
     robot.rotateAndCorrect(20.0, 750);
 
+    bool wasOnBlackLine = false;
+
     while (true)
     {
-        if (robot.leftColor())
+        if (robot.rightColor())
         {
-            robot.moveContinuous(600);
+            if (wasOnBlackLine)
+            {
+                robot.rotateAndCorrect(-5, 800);
+                wasOnBlackLine = false;
+            }
+            robot.moveContinuous(800);
         }
         else
         {
-            robot.turnLeftContinuous(600);
+            wasOnBlackLine = true;
+            robot.turnLeftContinuous(800);
         }
     }
 
