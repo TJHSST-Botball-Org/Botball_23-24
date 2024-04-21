@@ -44,6 +44,9 @@ public:
 
     void stop(); // Stops all turns and forward/backward movement.
 
+    bool leftColor();
+    bool rightColor();
+
     void turnLeftWithColorSensor(int speed);
     void turnRightWithColorSensor(int speed);
 
