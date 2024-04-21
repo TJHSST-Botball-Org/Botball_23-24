@@ -113,10 +113,10 @@ int main()
     robot.moveDistanceAndCorrect(7, 800);
 
     // Go backward out of scrapyard to release everything in the scrapyard
-    robot.moveDistanceAndCorrect(-9, 800);
+    robot.moveDistanceAndCorrect(-12, 800);
 
-    // Do a 210 degree turn to get into position to drop the yellow cube in the scrapyard
-    robot.rotateAndCorrect(-240.0, 650);
+    // Do a turn to get into position to drop the yellow cube in the scrapyard
+    robot.rotateAndCorrect(210.0, 650);
 
     // Move back a little to avoid dropping the cube on the rocks and stuff
     robot.moveDistanceAndCorrect(-2, 800);
