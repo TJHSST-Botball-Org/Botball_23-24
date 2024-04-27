@@ -4,7 +4,7 @@ class MOVEMENT_SPEED
 {
 public:
     static constexpr int SLOW = 100;
-    static constexpr int DEFAULT = 300;
+    static constexpr int DEFAULT = 200;
     static constexpr int FAST = 500;
 };
 
@@ -19,9 +19,9 @@ public:
 class SLIDE_SPEED
 {
 public:
-    static constexpr int SLOW = 50;
-    static constexpr int DEFAULT = 100;
-    static constexpr int FAST = 150;
+    static constexpr int SLOW = 500;
+    static constexpr int DEFAULT = 1000;
+    static constexpr int FAST = 1250;
 };
 
 class SLIDE_POS
@@ -31,20 +31,28 @@ public:
     static constexpr float TOP = 1.0f;
 };
 
+class Color
+{
+    static constexpr int BLACK = 1000;
+};
+
 class Roomba
 {
+public:
+    static const int LIGHT_PIN = 0;
+
 private:
     static const int DISTANCE_TO_INCHES = 1;
     static constexpr float ANGLE_TO_TICKS = 25.0f / 90.0f;
 
     static const int SLIDE_PIN = 0;         // motor
-    static const int SLIDE_TOP = 2000;      // ticks
+    static const int SLIDE_TOP = 4512;      // ticks
     static const int SLIDE_BOTTOM = 0;      // ticks
     static const int SLOW_DOWN_BUFFER = 50; // distance away from targetPos you should start slowing down
-    static const int SLIDE_SLEEP = 100;
+    static const int SLIDE_SLEEP = 2000;
 
     static const int SLIDE_PITCH_PIN = 0; // servo
-    static const int SLIDE_PITCH_VERTICAL = 850;
+    static const int SLIDE_PITCH_VERTICAL = 800;
     static const int SLIDE_PITCH_HORIZONTAL = 0;
     static const int SLIDE_PITCH_SLEEP = 500;
 
@@ -55,7 +63,6 @@ private:
 
     static const int TOP_SWITCH = 0;    // digital. This is the switch at the top of the slides
     static const int BOTTOM_SWITCH = 4; // digital. This is the switch at the bottom of the slides
-
 private:
     int lastSlidePos = 0;
 
@@ -71,14 +78,17 @@ public:
     Roomba();
 
     void move(int distance, int speed = MOVEMENT_SPEED::DEFAULT); // forward and backwards
-    void rotate(int angle, int speed = ROTATION_SPEED::DEFAULT);  // right and left
+    void moveTillBump(bool both = false, int speed = MOVEMENT_SPEED::DEFAULT);
+    void rotate(int angle, int speed = ROTATION_SPEED::DEFAULT); // right and left
 
     /*
-    precondition :
-        - 0.0 <= percentageUp <= 1.0
-    */
-    void setSlidePos(float percentageTop, bool startingAtTop, int speed = MOVEMENT_SPEED::DEFAULT);
-    void setSlidePitch(float percentageVertical);
+  precondition :
+      - 0.0 <= percentageUp <= 1.0
+      - Slides go up and go down to the correct percentage
+      - Starts from the top
+  */
+    void setSlidePos(float percentageTop, int speed = MOVEMENT_SPEED::DEFAULT);
+    void setSlidePitch(float percentageVertical); // 1.0f is vertical 0.0f is horizontal
     /*
     precondition :
         - 0.0 <= percentageClosed <= 1.0
@@ -87,10 +97,14 @@ public:
     void closeClaw();
     void openClaw();
 
-    void getNoodle(float percentageUp, int speed = MOVEMENT_SPEED::DEFAULT);
+    /*
+     * Precondition :
+     *    - Claw should be open
+     */
+    void getNoodle(float percentageUp, int speed = SLIDE_SPEED::DEFAULT);
     /*
     precondition :
-        - starts at percentup 1.0
+        - Starts from the top
     */
-    void dropOffNoodle(float percentageUp, int speed = MOVEMENT_SPEED::DEFAULT);
+    void dropOffNoodle(float percentageUp, int speed = SLIDE_SPEED::DEFAULT);
 };
